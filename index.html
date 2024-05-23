@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <title>D4LF Filter Editor</title>
+  <link rel="stylesheet" href="./css/normalize.css" media="screen"/>
+  <link rel="stylesheet" href="./css/sakura.css" media="screen"/>
+  <link rel="stylesheet" href="./css/main.css" media="screen"/>
+  <script src="./js/jquery.js"></script>
+  <script src="./js/yaml.js"></script>
+</head>
+<body>
+<h1 id="header">
+  <a href="https://github.com/aeon0/d4lf">Diablo 4 Loot Filter</a>
+  Editor
+</h1>
+
+<div id="start">
+  <div>
+    <p id="explain">
+      A simple tool to open up a <code>.yaml</code> filter for aeon0's D4LF and edit it visually.
+    </p>
+  </div>
+
+  <div id="start-buttons">
+    <button onclick="to_editor(new_filter)">New Filter</button>
+    <button onclick="to_editor(existing_filter)">Open Existing Filter</button>
+  </div>
+
+  <div>
+    <p id="locate">
+      Your existing filters can be found next to your D4LF install in <code>/config/profiles</code>
+      or separately in <code>%userprofile%/.d4lf/profiles</code>.
+    </p>
+  </div>
+</div>
+
+<div id="footer">
+  <hr>
+  <small>
+    Updated for D4LF <b>v5.1.2</b>.
+    Made by <a href="https://zbee.codes">zbee</a> 2024.
+    <a href="https://github.com/aeon0/d4lf">D4LF</a> made by <a href="https://github.com/aeon0">aeon0</a> 2023.
+  </small>
+</div>
+</body>
+<script src="./js/editor.js"></script>
+</html>
