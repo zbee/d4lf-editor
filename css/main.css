@@ -43,7 +43,7 @@ code {
 }
 
 #editor #filters div[id] {
-  height: 230px;
+  height: 210px;
   border: 3px solid #fff;
   padding: 5px;
   overflow-x: hidden;
@@ -51,36 +51,43 @@ code {
   scrollbar-width: none;
 }
 
-#editor #filters div[id] > label {
+#editor #filters div[id] > label,
+#editor #filters div[id] .affix-group label {
   display: inline-block;
   width: 100%;
   font-weight: normal;
 }
 
-#editor #filters div[id] > label input {
+#editor #filters div[id] label input {
   width: 2.75em;
   padding: 1px 5px;
   float: right;
 }
 
-#editor #filters div[id] > label select,
-#editor #filters div[id] > label option {
+#editor #filters div[id] label select,
+#editor #filters div[id] label option {
   width: 12em;
   padding: 1px 5px;
   font-size: 80%;
 }
 
-#editor #filters div[id] > label button {
+#editor #filters div[id] .affix-group {
+  border-left: 2px solid #fff;
+  margin-bottom: 2px;
+  padding-left: 4px;
+}
+
+#editor #filters div[id] .affix-group button {
   float: right;
   padding: 1px 5px;
   font-size: 85%;
 }
 
-#editor #filters div[id] .affixes {
+#editor #filters div[id] .affix-group .affixes {
   font-size: 65%;
 }
 
-#editor #filters div[id] .affixes .close::before {
+#editor #filters div[id] .affix-group .affixes .close::before {
   content: "\2716";
   cursor: pointer;
 }

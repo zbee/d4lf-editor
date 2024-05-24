@@ -34,17 +34,46 @@ let editor_data = editor_layout;
 
 ////////////////////////////////////////////////////////////////////////////////////
 
+// Editor data
+
+// List of all affixes
 $.getJSON('https://raw.githubusercontent.com/aeon0/d4lf/main/assets/lang/enUS/affixes.json', function (data) {
   var items = [];
   $.each(data, function (key, value) {
-    console.log(key, value)
     $('.affix-list').append(
       '<option data-key="' + key + '" data-value="' + value + '">' + value + '</option>'
     );
   });
 });
 
+// List of just weapons
+$.getJSON('https://raw.githubusercontent.com/aeon0/d4lf/main/assets/lang/enUS/item_types.json', function (data) {
+  var items = [];
+  $.each(data, function (key, value) {
+    let key_check = key.toLowerCase();
+    if (
+      key_check.includes('axe')
+      || key_check.includes('bow')
+      || key_check.includes('dagger')
+      || key_check.includes('focus')
+      || key_check.includes('mace')
+      || key_check.includes('totem')
+      || key_check.includes('polearm')
+      || key_check.includes('scythe')
+      || key_check.includes('shield')
+      || key_check.includes('staff')
+      || key_check.includes('sword')
+      || key_check.includes('wand')
+    )
+      $('.item-list').append(
+        '<option data-key="' + key + '" data-value="' + value + '">' + capitalize(value) + '</option>'
+      );
+  });
+});
+
 ////////////////////////////////////////////////////////////////////////////////////
+
+// Editor core
 
 // https://stackoverflow.com/a/1026087/1843510
 function capitalize(string) {
@@ -101,13 +130,15 @@ function build_editor() {
     }
 
     // Build the editor slots
-    let id = layout_item.slot;
-
     // Copy the placeholder
     let new_filter = base_filter_html.clone();
     // Fill the ID
-    new_filter.attr('id', id);
+    new_filter.attr('id', layout_item.slot);
     new_filter.find('u').text(capitalize(layout_item.slot));
+
+    // Show selector for weapons
+    if (layout_item.slot.includes('hand'))
+      new_filter.find('.select-item-type').show();
 
     // Place the editor slot
     new_filter.insertBefore('#controls');
@@ -123,3 +154,7 @@ function to_home() {
   editor.hide();
   $('body').css('maxWidth', '38em');
 }
+
+////////////////////////////////////////////////////////////////////////////////////
+
+// Editor Use
