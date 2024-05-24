@@ -33,6 +33,59 @@
     </p>
   </div>
 </div>
+<div id="editor" style="display:none">
+  <div id="base-filter" style="display: none">
+    <div>
+      <div style="line-height: 1.75em">
+        <u>2H Mace</u>
+        <label style="float: right">
+          <small>Minimum Power</small>
+          <input type="number" min="0" max="925" style="width: 4em; padding: 2px 6px" value="0">
+        </label>
+      </div>
+      <label>
+        <small>Minimum Greater Affixes</small>
+        <input type="number" min="0" max="5" value="0">
+      </label>
+      <label>
+        <small>Minimum Affixes from Below</small>
+        <input type="number" min="0" max="5" value="0">
+      </label>
+      <label>
+        <small>Add desired</small>
+        <select class="affix-list">
+          <option value="" selected disabled hidden>
+            Affix
+          </option>
+        </select>
+        <button onclick="add_affix($(this).parent())">Add</button>
+      </label>
+      <small class="affixes">
+        <code>maximum_life <span class="close"></span></code>
+        <code>cooldown_reduction <span class="close"></span></code>
+        <code>intelligence <span class="close"></span></code>
+        <code>resistance_to_all_elements <span class="close"></span></code>
+      </small>
+    </div>
+  </div>
+
+  <div id="blank" style="display: none">
+    <div style="height: 1px"></div>
+  </div>
+  <div id="filters">
+
+    <div id="controls">
+      <br>
+      <br>
+      <a class="button" href="https://github.com/aeon0/d4lf/blob/main/assets/lang/enUS/affixes.json" target="_blank">View Affix List</a>
+      <br>
+      <button onclick="to_home()">Restart</button>
+      <br>
+      <button onclick="to_home()">Save</button>
+    </div>
+
+  </div>
+</div>
 
 <div id="footer">
   <hr>
@@ -43,5 +96,5 @@
   </small>
 </div>
 </body>
-<script src="./js/editor.js"></script>
+<script src="./js/editor.js" defer></script>
 </html>
