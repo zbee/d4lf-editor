@@ -1,3 +1,11 @@
+// Selectors
+let start = $('#start'); // Splash page
+let editor = $('#editor'); // Editor page
+let filters = $('#filters'); // Filter container
+let filter_template = $('#base-filter > div');
+let blank_filter = $('#blank div');
+let input = document.createElement('input');
+
 // Constants
 const new_filter = true;
 const existing_filter = false;
