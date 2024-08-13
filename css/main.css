@@ -80,6 +80,7 @@ code {
   float: right;
   padding: 1px 5px;
   font-size: 85%;
+  margin-top: 4px;
 }
 
 #editor #filters div[id] .affix-group .affixes {
