@@ -27,6 +27,7 @@ let filter = {};
 let start = $('#start');
 let editor = $('#editor');
 let filters = $('#filters');
+const original_editor = editor.clone();
 let base_filter_html = $('#base-filter > div');
 let blank = $('#blank div');
 // Editor available elements
@@ -106,12 +107,19 @@ function to_editor(filter_selection) {
       reader.onload = readerEvent => {
         let content = readerEvent.target.result;
         filter = jsyaml.load(content);
+        show_editor();
       }
     }
+  } else {
+    show_editor();
   }
+}
 
+// Actually build and show the editor page
+function show_editor() {
   // Clear the page
   start.hide();
+
   editor.show();
   $('body').css('maxWidth', '70em');
   build_editor();
@@ -120,6 +128,7 @@ function to_editor(filter_selection) {
 // Build the editor HTML from template code (#base-filter)
 function build_editor() {
   editor_data = editor_layout;
+  editor.html(original_editor.html());
 
   // Iterate over equipment slots
   editor_data.forEach(function (layout_item) {
@@ -148,7 +157,7 @@ function build_editor() {
 // Return to the home page
 function to_home() {
   filter = {};
-  editor = original_editor;
+  editor.html(original_editor.html());
 
   start.show();
   editor.hide();
