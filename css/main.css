@@ -87,9 +87,24 @@ code {
   font-size: 65%;
 }
 
+#editor #filters div[id] .affix-group .affixes>*::after {
+  content: "\00a0";
+}
+
 #editor #filters div[id] .affix-group .affixes .close::before {
   content: "\2716";
+}
+
+#editor #filters div[id] .affix-group .affixes span {
   cursor: pointer;
+}
+
+#editor #filters div[id] .affix-group .affixes code input {
+  background: rgba(255,255,255,0.2);
+  padding: 0 0 0 2px;
+  margin: 0;
+  border: none;
+  width: 4.5em;
 }
 
 #editor #controls, #editor #uniques {

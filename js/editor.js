@@ -38,8 +38,20 @@ const implicit_affixes = {
     // 'Inherent' in D4LF
     // https://d4builds.gg/database/gear-affixes/
 }
+const affix_abbreviatons = {
+    'evade_grants_movement_speed_for_second': 'evade gives speed',
+    'attacks_reduce_evades_cooldown_by_seconds': 'attacks reduce evade cd',
+    'maximum_evade_charges': 'max evades',
+    'cooldown_reduction': 'cdr',
+    'resistance_to_all_elements': 'resist all',
+    // These affixes are handled dynamically:
+    // lucky_hit_*
+    // chance_for_*_to_cast_twice/chance_for_a_second_*_when_cast
+    // resource_generation_while_*
+    // critical_strike_chance_against_*
+    // (and any over >40 char are cut off and <abbr>ed)
+}
 const original_editor = editor.clone();
-
 
 let filter = {}; // Loaded filter data
 
