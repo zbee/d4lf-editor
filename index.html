@@ -2,7 +2,8 @@
 <html lang="en-US">
 <head>
   <title>D4LF Filter Editor</title>
-  <link rel="stylesheet" href="./css/normalize.css" media="screen"/>
+  <link rel="stylesheet" href="./css/normalize.css"
+        media="screen"/>
   <link rel="stylesheet" href="./css/sakura.css" media="screen"/>
   <link rel="stylesheet" href="./css/main.css" media="screen"/>
   <script
@@ -26,32 +27,46 @@
 <div id="start">
   <div>
     <p id="explain">
-      A simple tool to open up a <code>.yaml</code> filter for
-      <a href="https://github.com/aeon0" target="_blank">aeon0</a>'s
-      <a href="https://github.com/aeon0/d4lf" target="_blank">D4LF</a>
+      A simple tool to open up <code>.yaml</code> filters for
+      <a href="https://github.com/aeon0"
+         target="_blank">aeon0</a>'s
+      <a href="https://github.com/aeon0/d4lf"
+         target="_blank">D4LF</a>
       and edit it visually.
     </p>
   </div>
 
   <div id="start-buttons">
     <button onclick="to_editor(new_filter)">New Filter</button>
-    <button onclick="to_editor(existing_filter)">Open Existing Filter</button>
+    <button onclick="to_editor(existing_filter)">Open Existing
+      Filter
+    </button>
   </div>
 
   <div>
     <p id="locate">
       Your existing filters can be found in <code>%userprofile%/.d4lf/profiles</code>.
+      <br>
+      <small>
+        Only <code>Uniques</code> and <code>Affixes</code>
+        sections are supported, with 1 item type per filter.
+        <br>
+        Builds imported from Maxroll via D4LF are fully
+        supported.
+      </small>
     </p>
   </div>
 </div>
 <div id="editor" style="display:none">
+  <!-- Filter templates -->
   <div id="base-filter" style="display: none">
     <div>
       <div style="line-height: 1.75em">
         <u>Unknown Item</u>
         <label style="float: right">
           <small>Minimum Power</small>
-          <input type="number" min="0" max="925" style="width: 4em; padding: 2px 6px" value="0">
+          <input type="number" min="0" max="925"
+                 style="width: 4em; padding: 2px 6px" value="0">
         </label>
       </div>
       <label class="select-item-type" style="display: none">
@@ -83,32 +98,49 @@
               Affix
             </option>
           </select>
-          <button onclick="add_affix($(this).parent())">Add</button>
+          <button onclick="add_affix($(this).parent())">Add
+          </button>
         </label>
         <small class="affixes">
           <code>maximum_life <span class="close"></span></code>
-          <code>cooldown_reduction <span class="close"></span></code>
+          <code>cooldown_reduction <span
+              class="close"></span></code>
           <code>intelligence <span class="close"></span></code>
-          <code>resistance_to_all_elements <span class="close"></span></code>
+          <code>resistance_to_all_elements <span
+              class="close"></span></code>
         </small>
       </div>
     </div>
   </div>
-
   <div id="blank" style="display: none">
     <div style="height: 1px"></div>
   </div>
+
   <div id="filters">
+    <!-- Filters will be added here -->
 
     <div id="controls">
       <br>
       <br>
-      <a class="button" href="https://github.com/aeon0/d4lf/blob/main/assets/lang/enUS/affixes.json" target="_blank">Open
-        Affix List</a>
+      <a class="button"
+         href="https://github.com/aeon0/d4lf/blob/main/assets/lang/enUS/affixes.json"
+         target="_blank">Open Affix List</a>
       <br>
       <button onclick="to_home()">Restart</button>
       <br>
       <button onclick="to_home()">Save</button>
+    </div>
+
+    <div id="uniques">
+      <br>
+      <br>
+      <h3>Extra Uniques</h3>
+      <br>
+      <button onclick="add_unique()">Add</button>
+      <br>
+      <a class="button"
+         href="https://github.com/aeon0/d4lf/blob/main/assets/lang/enUS/uniques.json"
+         target="_blank">Open Unique List</a>
     </div>
 
   </div>
@@ -118,13 +150,22 @@
   <hr>
   <small>
     Version <kbd>0.0.0(season5)</kbd>.
-    Made by <a href="https://zbee.codes" target="_blank">zbee</a> 2024.
-    Code available on <a href="https://github.com/zbee/d4lf-editor">GitHub</a>.
+    Made by <a href="https://zbee.codes" target="_blank">zbee</a>
+    2024.
+    Code available on
+    <a href="https://github.com/zbee/d4lf-editor">GitHub</a>.
+
     <br>
+
     Updated for D4LF <kbd>v5.7.1</kbd>.
-    <a href="https://github.com/aeon0/d4lf" target="_blank">D4LF</a> made by <a href="https://github.com/aeon0" target="_blank">aeon0</a> 2023.
+    <a href="https://github.com/aeon0/d4lf"
+       target="_blank">D4LF</a>
+    made by
+    <a href="https://github.com/aeon0"
+       target="_blank">aeon0</a>
+    2023.
   </small>
 </div>
 </body>
-<script src="./js/editor.js" defer></script>
+<script src="./js/editor.js"></script>
 </html>
