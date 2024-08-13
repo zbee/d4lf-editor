@@ -35,11 +35,11 @@ code {
 }
 
 #editor #filters {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    grid-column-gap: 5em;
-    grid-row-gap: 2px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-column-gap: 5em;
+  grid-row-gap: 0.75em;
 }
 
 #editor #filters div[id] {
