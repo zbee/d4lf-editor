@@ -23,14 +23,33 @@ code {
   margin: 40px 0;
 }
 
-#start-buttons button {
+#start-buttons a {
   padding: 75px 0;
   font-size: 2.4rem;
   border: none;
   border-right: 2px solid grey;
+  border-top: 2px solid grey;
+  background: white;
+  color: rgb(34, 34, 34);
+  cursor: pointer;
+  text-align: center;
 }
 
-#start-buttons button:last-of-type {
+#start-buttons a:hover {
+  background: #c9c9c9;
+}
+
+#start-buttons a:nth-of-type(1),
+#start-buttons a:nth-of-type(2){
+  border-top: none;
+}
+
+#start-buttons a:nth-of-type(3),
+#start-buttons a:nth-of-type(4) {
+  padding: 25px 0;
+}
+
+#start-buttons a:nth-of-type(even) {
   border-right: none;
 }
 
