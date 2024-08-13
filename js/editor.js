@@ -127,31 +127,42 @@ function to_editor(filter_selection) {
   if (filter_selection !== new_filter && filter_selection !== existing_filter)
     return;
 
-  // Open a file dialog to choose a filter
-  if (filter_selection === existing_filter) {
-    // The .yaml file dialog
-    let input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.yaml';
-    input.click();
-
-    // Read the filter
-    input.onchange = e => {
-      // Load the given filter
-      let file = e.target.files[0];
-      let reader = new FileReader();
-      reader.readAsText(file, 'UTF-8');
-
-      // Parse the given filter
-      reader.onload = readerEvent => {
-        let content = readerEvent.target.result;
-        filter = jsyaml.load(content);
+    // Open a file dialog to choose a filter
+    if (filter_selection === existing_filter) {
+        // The .yaml file dialog
+        input.type = 'file';
+        input.accept = '.yaml';
+        input.click();
+        // Triggers input.onchange below, then reader.onload
+    } else {
         show_editor();
-      }
     }
-  } else {
-    show_editor();
-  }
+}
+
+// Load the given filter file
+input.onchange = e => {
+    file = e.target.files[0];
+    reader.readAsText(file, 'UTF-8');
+}
+
+// Parse the given filter
+reader.onload = readerEvent => {
+    let content = readerEvent.target.result;
+    try {
+        // Load the filter
+        // noinspection JSCheckFunctionSignatures
+        filter = jsyaml.load(content);
+        console.debug(filter);
+
+        // Save the filter
+        editor_data = editor_layout;
+        // Show the editor
+        show_editor();
+    } catch (e) {
+        console.debug(content);
+        console.debug(filter);
+        console.error(e);
+    }
 }
 
 // Actually build and show the editor page
