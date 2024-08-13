@@ -252,3 +252,14 @@ function to_home() {
 ////////////////////////////////////////////////////////////////////////////////////
 
 // Editor Use
+
+function change_comparison (element) {
+    let current_comparison = element.data('current');
+    if (current_comparison === 'larger') {
+        element.data('current', 'smaller');
+        element.html(comparison['smaller']);
+    } else {
+        element.data('current', 'larger');
+        element.html(comparison['larger']);
+    }
+}

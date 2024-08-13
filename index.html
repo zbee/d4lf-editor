@@ -96,6 +96,7 @@
                style="width: 4em; padding: 2px 6px" value="0">
         <span class="comparison button" data-current="larger"
               data-key="aspect-comparison"
+              onclick="change_comparison($(this))"
               style="float: right">
           &#10095;
         </span>
@@ -123,7 +124,8 @@
           <code>
             <p>maximum life</p>
             <span class="button" data-current="larger"
-                  data-key="affix-comparison">
+                  data-key="affix-comparison"
+                  onclick="change_comparison($(this))">
               &#10095;
             </span>
             <input type="number" min="0" max="3000" value="0"

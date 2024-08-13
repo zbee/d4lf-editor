@@ -132,9 +132,9 @@ code {
 }
 
 #editor #filters div[id] .affix-group .affixes code .button {
-  padding: 0 0 0 5px;
+  padding: 0 5px;
   border: none;
-  display: inline;
+  display: inline-block;
 }
 
 #editor #filters div[id] .affix-group .affixes code input {
