@@ -106,16 +106,35 @@ code {
   font-size: 65%;
 }
 
-#editor #filters div[id] .affix-group .affixes>*::after {
-  content: "\00a0";
+#editor #filters div[id] .affix-group .affixes code {
+  margin-right: 4px;
+  display: inline-block;
+  padding: 0 0.3em;
+  border: 0;
+}
+
+#editor #filters div[id] .affix-group .affixes code>span,
+#editor #filters div[id] .affix-group .affixes code>input {
+  margin-left: 2px;
 }
 
 #editor #filters div[id] .affix-group .affixes .close::before {
   content: "\2716";
 }
 
+#editor #filters div[id] .affix-group .affixes p {
+  display: inline;
+  margin: 0;
+}
+
 #editor #filters div[id] .affix-group .affixes span {
   cursor: pointer;
+}
+
+#editor #filters div[id] .affix-group .affixes code .button {
+  padding: 0 0 0 5px;
+  border: none;
+  display: inline;
 }
 
 #editor #filters div[id] .affix-group .affixes code input {
@@ -124,6 +143,7 @@ code {
   margin: 0;
   border: none;
   width: 4.5em;
+  border-radius: 0px;
 }
 
 #editor #controls, #editor #uniques {
