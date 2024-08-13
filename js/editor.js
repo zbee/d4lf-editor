@@ -29,12 +29,15 @@ const editor_layout = [
   {slot: 'boots', filters: {},},
   {slot: 'right_hand', filters: {},},
 ];
-// Loaded filter data
-let filter = {};
-// Saved selectors
-let start = $('#start');
-let editor = $('#editor');
-let filters = $('#filters');
+const implicit_affixes = {
+    'boots': [
+        'evade_grants_movement_speed_for_second',
+        'attacks_reduce_evades_cooldown_by_seconds',
+        'maximum_evade_charges',
+    ],
+    // 'Inherent' in D4LF
+    // https://d4builds.gg/database/gear-affixes/
+}
 const original_editor = editor.clone();
 let base_filter_html = $('#base-filter > div');
 let blank = $('#blank div');
