@@ -59,29 +59,57 @@ $.getJSON('https://raw.githubusercontent.com/aeon0/d4lf/main/assets/lang/enUS/af
 });
 
 // List of just weapons
-$.getJSON('https://raw.githubusercontent.com/aeon0/d4lf/main/assets/lang/enUS/item_types.json', function (data) {
-  var items = [];
-  $.each(data, function (key, value) {
-    let key_check = key.toLowerCase();
-    if (
-      key_check.includes('axe')
-      || key_check.includes('bow')
-      || key_check.includes('dagger')
-      || key_check.includes('focus')
-      || key_check.includes('mace')
-      || key_check.includes('totem')
-      || key_check.includes('polearm')
-      || key_check.includes('scythe')
-      || key_check.includes('shield')
-      || key_check.includes('staff')
-      || key_check.includes('sword')
-      || key_check.includes('wand')
-    )
-      $('.item-list').append(
-        '<option data-key="' + key + '" data-value="' + value + '">' + capitalize(value) + '</option>'
-      );
-  });
-});
+$.getJSON(
+    'https://raw.githubusercontent.com/aeon0/d4lf/main/assets/lang/enUS/item_types.json',
+    function (data) {
+        $.each(data, function (key, value) {
+            let key_check = key.toLowerCase();
+            if (
+                key_check.includes('axe')
+                || key_check.includes('bow')
+                || key_check.includes('dagger')
+                || key_check.includes('focus')
+                || key_check.includes('mace')
+                || key_check.includes('totem')
+                || key_check.includes('polearm')
+                || key_check.includes('scythe')
+                || key_check.includes('shield')
+                || key_check.includes('staff')
+                || key_check.includes('sword')
+                || key_check.includes('wand')
+            ) {
+                $('.item-list').append(
+                    '<option data-key="' + key + '" data-value="' + value + '">' +
+                    capitalize(value) +
+                    '</option>'
+                );
+            }
+        });
+    }
+);
+
+// List of all uniques
+$.getJSON(
+    'https://raw.githubusercontent.com/aeon0/d4lf/main/assets/lang/enUS/uniques.json',
+    function (data) {
+        $.each(data, function (key, value) {
+            // Filter out some of the dud values
+            if (key.toString().includes('(')
+                || key.toString().includes('[')
+                || key.toString().includes('boost')
+                || value['desc'].toLowerCase().includes('test item')
+                || value['desc'].toLowerCase().includes('tbd')) {
+                return;
+            }
+
+            $('.unique-list').append(
+                '<option data-key="' + key + '" data-value="' + value['desc'] + '">' +
+                capitalize(key) +
+                '</option>'
+            );
+        });
+    }
+);
 
 ////////////////////////////////////////////////////////////////////////////////////
 
