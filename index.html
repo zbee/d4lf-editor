@@ -64,9 +64,10 @@
   </div>
 </div>
 <div id="editor" style="display:none">
-  <!-- Filter templates -->
+  <!--region Filter templates-->
   <div id="base-filter" style="display: none">
     <div>
+      <!--region Title, MinPower-->
       <div style="line-height: 1.75em">
         <u>Unknown Item</u>
         <label style="float: right" data-key="minPower">
@@ -75,6 +76,8 @@
                  style="width: 4em; padding: 2px 6px" value="0">
         </label>
       </div>
+      <!--endregion-->
+      <!--region ItemType-->
       <label class="select-item-type" style="display: none"
              data-key="itemType">
         <small>Item Type</small>
@@ -82,6 +85,8 @@
           <option value="" selected></option>
         </select>
       </label>
+      <!--endregion-->
+      <!--region Unique-->
       <label class="unique-selection" data-key="aspect">
         <small>Unique?</small>
         <select class="unique-list"
@@ -89,6 +94,8 @@
           <option value="" selected>No</option>
         </select>
       </label>
+      <!--endregion-->
+      <!--region Unique Aspect Comparison/Value-->
       <label class="unique-roll" style="display: none"
              data-key="aspect-value">
         <small>Minimum Unique Aspect roll</small>
@@ -101,15 +108,22 @@
           &#10095;
         </span>
       </label>
+      <!--endregion-->
+      <!--region MinGreaterAffixCount-->
       <label data-key="minGreaterAffixCount">
         <small>Minimum Greater Affixes</small>
         <input type="number" min="0" max="5" value="0">
       </label>
+      <!--endregion-->
+      <!--region Affixes-->
       <div class="affix-group" data-key="affixPool">
+        <!--region minCount-->
         <label data-key="minCount">
           <small>Minimum Affixes from Below</small>
           <input type="number" min="0" max="5" value="0">
         </label>
+        <!--endregion-->
+        <!--region Affix Adding-->
         <label>
           <small>Add desired</small>
           <select class="affix-list">
@@ -120,9 +134,15 @@
           <button onclick="add_affix($(this).parent())">Add
           </button>
         </label>
+        <!--endregion-->
         <small class="affixes" data-key="count">
+          <!-- Affixes will be added here -->
+
+          <!--region Example Affixes-->
           <code>
-            <p>maximum life</p>
+            <p class="affix" data-key="maximum_life">
+              maximum life
+            </p>
             <span class="button" data-current="larger"
                   data-key="affix-comparison"
                   onclick="change_comparison($(this))">
@@ -150,18 +170,23 @@
             <input type="number" min="0" max="5" value="0">
             <span class="close"></span>
           </code>
+          <!--endregion-->
         </small>
       </div>
+      <!--endregion-->
     </div>
   </div>
   <div id="blank" style="display: none">
     <div style="height: 1px"></div>
   </div>
+  <!--endregion-->
 
   <div id="filters">
     <!-- Filters will be added here -->
 
-    <div id="controls">
+
+    <!--region Editor Controls-->
+    <div id="controls" ignore>
       <br>
       <br>
       <a class="button"
@@ -173,7 +198,7 @@
       <button onclick="to_home()">Save</button>
     </div>
 
-    <div id="uniques">
+    <div id="uniques" ignore>
       <br>
       <br>
       <h3>Extra Uniques</h3>
@@ -184,6 +209,7 @@
          href="https://github.com/aeon0/d4lf/blob/main/assets/lang/enUS/uniques.json"
          target="_blank">Open Unique List</a>
     </div>
+    <!--endregion-->
 
   </div>
 </div>
