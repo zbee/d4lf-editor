@@ -92,12 +92,15 @@ code {
   cursor: pointer;
 }
 
-#editor #controls {
+#editor #controls, #editor #uniques {
   border: none !important;
+  text-align: center;
 }
 
 #editor #controls button,
-#editor #controls .button{
+#editor #controls .button,
+#editor #uniques button,
+#editor #uniques .button {
   width: 70%;
   margin: 0 auto;
   color: #222 !important;
