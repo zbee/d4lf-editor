@@ -74,6 +74,7 @@ code {
   display: inline-block;
   width: 100%;
   font-weight: normal;
+  line-height: 1em;
 }
 
 #editor #filters div[id] label input {
@@ -99,7 +100,6 @@ code {
   float: right;
   padding: 1px 5px;
   font-size: 85%;
-  margin-top: 4px;
 }
 
 #editor #filters div[id] .affix-group .affixes {
