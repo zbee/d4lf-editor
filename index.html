@@ -139,7 +139,6 @@
         <!--endregion-->
         <small class="affixes" data-key="count">
           <!-- Affixes will be added here -->
-          <div class="affix-target" style="display: none" ignore></div>
         </small>
       </div>
       <!--endregion-->
@@ -160,7 +159,7 @@
             </span>
     <input type="number" min="0" max="3000" value="0"
            data-key="affix-value">
-    <span class="close"></span>
+    <span class="close" onclick="$(this).parent().remove()"></span>
   </code>
   <!--endregion-->
   <!--endregion-->

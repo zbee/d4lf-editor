@@ -270,9 +270,7 @@ function to_home() {
 function abbreviate_affix(affix_key) {
     // Abbreviate the affix if the key is in the list or if it's too long
     if (affix_abbreviatons.hasOwnProperty(affix_key)) {
-        affix_key = affix_abbreviatons[affix_key];
-        console.debug('individually abbreviated', affix_key);
-        return affix_key;
+        return affix_abbreviatons[affix_key];
     }
 
     // If key starts with a dynamic abbreviation, replace each segment of it
@@ -294,6 +292,20 @@ function abbreviate_affix(affix_key) {
     }
 
     return affix_key;
+}
+
+// Build list of affixes in the element
+function build_affixes(element) {
+    let affixes = element.find('.affixes').children();
+    let affix_list = [];
+
+    // Iterate over the affixes
+    affixes.each(function () {
+        let affix = $(this).find('p').data('key');
+        affix_list.push(affix);
+    });
+
+    return affix_list;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -355,6 +367,12 @@ function add_affix(element) {
     let affix = element.find('select').children('option:selected');
     let affix_key = affix.data('key');
     let affix_value = affix.data('value');
+
+    // Bail if affix already in list
+    let current_affixes = build_affixes(element.parent());
+    if (current_affixes.includes(affix_key)) {
+        return;
+    }
 
     // Bail if no value
     if (affix_value === '') {
