@@ -104,8 +104,8 @@ let reader = new FileReader(); // File reader
 //endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
-
-// Editor data
+//region Editor data
+////////////////////////////////////////////////////////////////////////////////////
 
 // List of all affixes
 $.getJSON(
@@ -173,10 +173,12 @@ $.getJSON(
         });
     }
 );
+//endregion
+//endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
-
-// Editor utilities
+//region Editor Utilities
+////////////////////////////////////////////////////////////////////////////////////
 
 // https://stackoverflow.com/a/1026087/1843510
 function capitalize(string) {
@@ -203,72 +205,6 @@ function to_editor(filter_selection) {
         editor_source = new_filter;
         show_editor();
     }
-}
-
-// Check for an existing unique-to-slot mapping, and parse it if it exists
-function unique_slot_mapping(filter) {
-    let uniques = filter['Uniques'];
-    let affixes = filter['Affixes'];
-
-    // Build simple list of aspect names of uniques
-    let unique_aspects = [];
-    for (let i = 0; i < uniques.length; i++) {
-        let unique = uniques[i];
-        let aspect = unique['aspect'][0];
-        unique_aspects.push(aspect);
-    }
-
-    console.debug(unique_aspects, affixes);
-
-    // Foreach array element, check if it's a unique-to-slot mapping
-    for (let i = 0; i < affixes.length; i++) {
-        let affix = affixes[i];
-        // Get the one key in the object
-        let key = Object.keys(affix)[0];
-        // Check if the key is a unique-to-slot mapping
-        if (key.startsWith(mapping_label)) {
-            // Get just the mapping data
-            let mapping = key.split(mapping_label_separator)[1];
-            // Split maps into individual mappings
-            let mappings = mapping.split(mapping_separator);
-
-            // Build a mapping object
-            let mapping_data = {};
-            for (let j = 0; j < mappings.length; j++) {
-                // Split the mapping into key and value
-                let mapping_parts = mappings[j].split(mapping_key_separator);
-                // Check that the mapping  data is valid
-                if (mapping_parts.length !== 2) {
-                    continue;
-                }
-                // Check that there is a unique for the mapping
-                if (!unique_aspects.includes(mapping_parts[1])) {
-                    continue;
-                }
-
-                // Add the mapping to the mapping object
-                mapping_data[mapping_parts[0]] = mapping_parts[1];
-            }
-
-            // Check that the mapping object has data
-            if (jQuery.isEmptyObject(mapping_data)) {
-                continue;
-            }
-
-            // Return the mapping data
-            return mapping_data;
-        }
-    }
-
-    return false;
-}
-
-// To convert a js-yaml-read filter into the same format as editor_layout
-function parse_filter(filter) {
-    let unique_mapping = unique_slot_mapping(filter);
-    let all_uniques_unslotted = unique_mapping === false;
-
-    return editor_layout;
 }
 
 // Load the given filter file
@@ -394,10 +330,11 @@ function build_affixes(element) {
 
     return affix_list;
 }
+//endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
-
-// Editor Use
+//region Editor UX
+////////////////////////////////////////////////////////////////////////////////////
 
 // Alternate the comparison operator for an aspect or affix
 function change_comparison(element) {
@@ -511,4 +448,75 @@ function add_unique() {
     // Add the unique to the unique list
     new_unique.insertAfter('#uniques');
     new_unique.fadeIn(800);
+}
+//endregion
+
+////////////////////////////////////////////////////////////////////////////////////
+//region Loading and Saving Filters
+////////////////////////////////////////////////////////////////////////////////////
+
+// Check for an existing unique-to-slot mapping, and parse it if it exists
+function unique_slot_mapping(filter) {
+    let uniques = filter['Uniques'];
+    let affixes = filter['Affixes'];
+
+    // Build simple list of aspect names of uniques
+    let unique_aspects = [];
+    for (let i = 0; i < uniques.length; i++) {
+        let unique = uniques[i];
+        let aspect = unique['aspect'][0];
+        unique_aspects.push(aspect);
+    }
+
+    console.debug(unique_aspects, affixes);
+
+    // Foreach array element, check if it's a unique-to-slot mapping
+    for (let i = 0; i < affixes.length; i++) {
+        let affix = affixes[i];
+        // Get the one key in the object
+        let key = Object.keys(affix)[0];
+        // Check if the key is a unique-to-slot mapping
+        if (key.startsWith(mapping_label)) {
+            // Get just the mapping data
+            let mapping = key.split(mapping_label_separator)[1];
+            // Split maps into individual mappings
+            let mappings = mapping.split(mapping_separator);
+
+            // Build a mapping object
+            let mapping_data = {};
+            for (let j = 0; j < mappings.length; j++) {
+                // Split the mapping into key and value
+                let mapping_parts = mappings[j].split(mapping_key_separator);
+                // Check that the mapping  data is valid
+                if (mapping_parts.length !== 2) {
+                    continue;
+                }
+                // Check that there is a unique for the mapping
+                if (!unique_aspects.includes(mapping_parts[1])) {
+                    continue;
+                }
+
+                // Add the mapping to the mapping object
+                mapping_data[mapping_parts[0]] = mapping_parts[1];
+            }
+
+            // Check that the mapping object has data
+            if (jQuery.isEmptyObject(mapping_data)) {
+                continue;
+            }
+
+            // Return the mapping data
+            return mapping_data;
+        }
+    }
+
+    return false;
+}
+
+// To convert a js-yaml-read filter into the same format as editor_layout
+function parse_filter(filter) {
+    let unique_mapping = unique_slot_mapping(filter);
+    let all_uniques_unslotted = unique_mapping === false;
+
+    return editor_layout;
 }
