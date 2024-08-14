@@ -130,6 +130,7 @@ const yaml_header_comment = ''
 $('.version').text(version);
 $('.supported-d4lf').text(supported_d4lf);
 //endregion
+//endregion
 
 //region Working Data
 let editor_source = null;
@@ -137,6 +138,7 @@ let editor_data = editor_layout; // Editor working data
 let filter = {}; // Loaded filter data
 let file = null; // Uploaded file
 let reader = new FileReader(); // File reader
+//endregion
 //endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -264,6 +266,7 @@ function show_editor() {
 // Build the editor HTML from template code (#base-filter)
 function build_editor() {
     editor.html(original_editor.html());
+    console.debug(editor_data);
 
     // Iterate over equipment slots
     editor_data.forEach(function (layout_item) {
@@ -280,13 +283,244 @@ function build_editor() {
         // Build the editor slots
         // Copy the template
         let new_filter = filter_template.clone();
-        // Fill the ID into the template
-        new_filter.attr('id', layout_item.slot);
-        new_filter.find('u').text(capitalize(layout_item.slot));
+        // Fill basic data, if it's a new filter
+        if (editor_source === new_filter || layout_item.filters === null) {
+            // Fill the ID into the template
+            new_filter.attr('id', layout_item.slot);
+            new_filter.find('u').text(capitalize(layout_item.slot));
 
-        // Show Item-Type selector for weapons
-        if (layout_item.slot.includes('hand')) {
-            new_filter.find('.select-item-type').show();
+            // Show Item-Type selector for weapons
+            if (layout_item.slot.includes('hand')) {
+                new_filter.find('.select-item-type').show();
+            }
+        }
+        // Fill the filter data, if it's an existing filter
+        else if (editor_source === existing_filter) {
+            // Fill the ID into the template
+            new_filter.attr('id', layout_item.slot);
+            new_filter.find('u').text(capitalize(layout_item.slot));
+
+            // Fill the minPower
+            if (layout_item.filters.hasOwnProperty('minPower')) {
+                new_filter
+                    .find('[data-key="minPower"] input')
+                    .val(layout_item.filters['minPower']);
+            }
+
+            // Fill the itemType
+            if (layout_item.filters.hasOwnProperty('itemType')) {
+                let item_type = layout_item.filters['itemType'];
+                if (Array.isArray(item_type)) {
+                    item_type = item_type[0];
+                }
+                // Set the item type
+                new_filter
+                    .find('.item-list option[data-key="' + item_type + '"]')
+                    .attr('selected', '');
+                // Unselect the default option
+                new_filter.find('.item-list option').first().removeAttr('selected');
+                if (layout_item.slot.includes('hand')) {
+                    // Hide unique selection if item type is selected
+                    new_filter.find('.unique-selection').hide();
+                }
+            }
+
+            // Fill the Unique
+            if (layout_item.filters.hasOwnProperty('aspect')) {
+                let unique = layout_item.filters['aspect'];
+                if (Array.isArray(unique)) {
+                    unique = unique[0];
+                }
+                // Set the unique
+                new_filter
+                    .find('.unique-list option[data-key="' + unique + '"]')
+                    .attr('selected', '');
+                // Unselect the default option
+                new_filter.find('.unique-list option')
+                          .first()
+                          .removeAttr('selected');
+                // Show the unique roll if unique is selected
+                new_filter.find('.unique-roll').show();
+                // Hide the item type selection if unique is selected
+                new_filter.find('.select-item-type').hide();
+            }
+
+            // Fill the Unique aspect roll
+            if (layout_item.filters.hasOwnProperty('aspect')) {
+                let roll = layout_item.filters['aspect'];
+                if (Array.isArray(roll)) {
+                    let value = '0';
+                    if (roll.length >= 2) {
+                        value = roll[1];
+                    }
+                    let compare = ['larger', comparison['larger']];
+                    if (roll.length >= 3) {
+                        compare = [roll[2], comparison[roll[2]]];
+                    }
+                    new_filter.find('.unique-roll input').val(value);
+                    new_filter.find('.unique-roll .comparison').html(compare[1]);
+                    new_filter.find('.unique-roll .comparison').data(
+                        'current',
+                        compare[0]
+                    );
+                }
+            }
+
+            // Fill minGreaterAffixCount
+            if (layout_item.filters.hasOwnProperty('affixPool')
+                && layout_item.filters['affixPool'][0].hasOwnProperty('minGreaterAffixCount')) {
+                new_filter
+                    .find('[data-key="minGreaterAffixCount"] input')
+                    .val(layout_item.filters['affixPool'][0]['minGreaterAffixCount']);
+            }
+            // Again, for uniques
+            if (layout_item.filters.hasOwnProperty('minGreaterAffixCount')) {
+                new_filter
+                    .find('[data-key="minGreaterAffixCount"] input')
+                    .val(layout_item.filters['minGreaterAffixCount']);
+            }
+
+            // Fill minCount
+            if (layout_item.filters.hasOwnProperty('minCount')) {
+                new_filter
+                    .find('[data-key="minCount"] input')
+                    .val(layout_item.filters['minCount']);
+            }
+
+            // todo: this should be a loop over `layout_item.filters['affixPool']`,
+            //  to account for multiple pools (e.g. with different minCount)
+            // Fill affixes
+            if (layout_item.filters.hasOwnProperty('affixPool')
+                && layout_item.filters['affixPool'][0].hasOwnProperty('count')
+                && layout_item.filters['affixPool'][0]['count'].length > 0) {
+                // Foreach affix in the affixPool.count
+                for (let i = 0; i < layout_item.filters['affixPool'][0]['count'].length; i++) {
+                    let affix = layout_item.filters['affixPool'][0]['count'][i];
+                    // noinspection DuplicatedCode
+                    let key = '';
+                    let value = 0;
+                    let compare = 'larger';
+
+                    // Parse different layouts of affixes
+                    if (Array.isArray(affix)) {
+                        key = affix[0];
+                        if (affix.length >= 2) {
+                            value = affix[1];
+                        }
+                        if (affix.length >= 3) {
+                            compare = affix[2];
+                        }
+                    }
+                    else if (typeof affix === 'object') {
+                        key = affix['name'];
+                        if (affix.hasOwnProperty('value')) {
+                            value = affix['value'];
+                        }
+                        if (affix.hasOwnProperty('comparison')) {
+                            compare = affix['comparison'];
+                        }
+                    }
+                    else if (typeof affix === 'string') {
+                        key = affix;
+                    }
+
+                    // Add the affix to the affix list
+                    add_affix(
+                        new_filter,
+                        key,
+                        compare,
+                        value
+                    );
+                }
+            }
+            // Again, for uniques
+            if (layout_item.filters.hasOwnProperty('affix')
+                && layout_item.filters['affix'].length > 0) {
+                // Foreach affix in the affixPool.count
+                for (let i = 0; i < layout_item.filters['affix'].length; i++) {
+                    let affix = layout_item.filters['affix'][i];
+                    // noinspection DuplicatedCode
+                    let key = '';
+                    let value = 0;
+                    let compare = 'larger';
+
+                    // Parse different layouts of affixes
+                    if (Array.isArray(affix)) {
+                        key = affix[0];
+                        if (affix.length >= 2) {
+                            value = affix[1];
+                        }
+                        if (affix.length >= 3) {
+                            compare = affix[2];
+                        }
+                    }
+                    else if (typeof affix === 'object') {
+                        key = affix['name'];
+                        if (affix.hasOwnProperty('value')) {
+                            value = affix['value'];
+                        }
+                        if (affix.hasOwnProperty('comparison')) {
+                            compare = affix['comparison'];
+                        }
+                    }
+                    else if (typeof affix === 'string') {
+                        key = affix;
+                    }
+
+                    // Add the affix to the affix list
+                    add_affix(
+                        new_filter,
+                        key,
+                        compare,
+                        value
+                    );
+                }
+            }
+
+            // Fill inherent affixes
+            if (layout_item.filters.hasOwnProperty('inherentPool')
+                && layout_item.filters['inherentPool'][0].hasOwnProperty('count')
+                && layout_item.filters['inherentPool'][0]['count'].length > 0) {
+                // Foreach affix in the affixPool.count
+                for (let i = 0; i < layout_item.filters['inherentPool'][0]['count'].length; i++) {
+                    let affix = layout_item.filters['inherentPool'][0]['count'][i];
+                    // noinspection DuplicatedCode
+                    let key = '';
+                    let value = 0;
+                    let compare = 'larger';
+
+                    // Parse different layouts of affixes
+                    if (Array.isArray(affix)) {
+                        key = affix[0];
+                        if (affix.length >= 2) {
+                            value = affix[1];
+                        }
+                        if (affix.length >= 3) {
+                            compare = affix[2];
+                        }
+                    }
+                    else if (typeof affix === 'object') {
+                        key = affix['name'];
+                        if (affix.hasOwnProperty('value')) {
+                            value = affix['value'];
+                        }
+                        if (affix.hasOwnProperty('comparison')) {
+                            compare = affix['comparison'];
+                        }
+                    }
+                    else if (typeof affix === 'string') {
+                        key = affix;
+                    }
+
+                    // Add the affix to the affix list
+                    add_affix(
+                        new_filter,
+                        key,
+                        compare,
+                        value
+                    );
+                }
+            }
         }
 
         // Place the editor slot
@@ -402,11 +636,21 @@ function toggle_unique_aspect(element) {
 }
 
 // Add an affix to the affix list
-function add_affix(element) {
-    // Get the affix key and value
-    let affix = element.find('select').children('option:selected');
-    let affix_key = affix.data('key');
-    let affix_value = affix.data('value');
+function add_affix(element,
+                   affix_key = null,
+                   affix_compare = null,
+                   affix_compare_value = null) {
+    let affix_value;
+    if (affix_key !== null) {
+        element = element.find('.affix-list').parent();
+        let affixes = element.find('select');
+        affix_value = affixes.find('option[data-key="' + affix_key + '"]').data('value');
+    } else {
+        // Get the affix key and value
+        let affix = element.find('select').children('option:selected');
+        affix_key = affix.data('key');
+        affix_value = affix.data('value');
+    }
 
     // Bail if affix already in list
     let current_affixes = build_affixes(element.parent());
@@ -423,6 +667,8 @@ function add_affix(element) {
     let new_affix = affix_template.clone();
     new_affix.show();
     new_affix.fadeOut(0);
+
+    // Set the affix key and value
     let affix_text = new_affix.find('p');
     affix_text.data('key', affix_key);
     affix_text.text(affix_value);
@@ -431,6 +677,16 @@ function add_affix(element) {
     let abbr = abbreviate_affix(affix_key);
     if (abbr !== affix_key) {
         affix_text.html('<abbr title="' + affix_value + '">' + abbr + '</abbr>');
+    }
+
+    // Add in the comparison and value, if they were passed
+    if (affix_compare !== null) {
+        let compare = new_affix.find('.button');
+        compare.html(comparison[affix_compare]);
+        compare.data('current', affix_compare);
+    }
+    if (affix_compare_value !== null) {
+        new_affix.find('input').val(affix_compare_value);
     }
 
     // Add the affix to the affix list
@@ -489,8 +745,6 @@ function read_unique_slot_mapping(filter) {
         let aspect = unique['aspect'][0];
         unique_aspects.push(aspect);
     }
-
-    console.debug(unique_aspects, affixes);
 
     // Foreach array element, check if it's a unique-to-slot mapping
     for (let i = 0; i < affixes.length; i++) {
@@ -872,7 +1126,8 @@ function parse_filter() {
             }
             if (has_synonym(slot)) {
                 if (unique_mapping.hasOwnProperty(get_synonym(slot))) {
-                    layout_item['filters'] = search_filter_by(unique_mapping[get_synonym(slot)]);
+                    layout_item['filters'] = search_filter_by(unique_mapping[get_synonym(
+                        slot)]);
                     continue;
                 }
             }
