@@ -373,7 +373,8 @@ function build_editor() {
 
             // Fill minGreaterAffixCount
             if (layout_item.filters.hasOwnProperty('affixPool')
-                && layout_item.filters['affixPool'][0].hasOwnProperty('minGreaterAffixCount')) {
+                && layout_item.filters['affixPool'][0].hasOwnProperty(
+                    'minGreaterAffixCount')) {
                 new_filter
                     .find('[data-key="minGreaterAffixCount"] input')
                     .val(layout_item.filters['affixPool'][0]['minGreaterAffixCount']);
@@ -415,8 +416,7 @@ function build_editor() {
                         if (affix.length >= 3) {
                             compare = affix[2];
                         }
-                    }
-                    else if (typeof affix === 'object') {
+                    } else if (typeof affix === 'object') {
                         key = affix['name'];
                         if (affix.hasOwnProperty('value')) {
                             value = affix['value'];
@@ -424,8 +424,7 @@ function build_editor() {
                         if (affix.hasOwnProperty('comparison')) {
                             compare = affix['comparison'];
                         }
-                    }
-                    else if (typeof affix === 'string') {
+                    } else if (typeof affix === 'string') {
                         key = affix;
                     }
 
@@ -458,8 +457,7 @@ function build_editor() {
                         if (affix.length >= 3) {
                             compare = affix[2];
                         }
-                    }
-                    else if (typeof affix === 'object') {
+                    } else if (typeof affix === 'object') {
                         key = affix['name'];
                         if (affix.hasOwnProperty('value')) {
                             value = affix['value'];
@@ -467,8 +465,7 @@ function build_editor() {
                         if (affix.hasOwnProperty('comparison')) {
                             compare = affix['comparison'];
                         }
-                    }
-                    else if (typeof affix === 'string') {
+                    } else if (typeof affix === 'string') {
                         key = affix;
                     }
 
@@ -503,8 +500,7 @@ function build_editor() {
                         if (affix.length >= 3) {
                             compare = affix[2];
                         }
-                    }
-                    else if (typeof affix === 'object') {
+                    } else if (typeof affix === 'object') {
                         key = affix['name'];
                         if (affix.hasOwnProperty('value')) {
                             value = affix['value'];
@@ -512,8 +508,7 @@ function build_editor() {
                         if (affix.hasOwnProperty('comparison')) {
                             compare = affix['comparison'];
                         }
-                    }
-                    else if (typeof affix === 'string') {
+                    } else if (typeof affix === 'string') {
                         key = affix;
                     }
 
@@ -652,15 +647,18 @@ function toggle_unique_aspect(element) {
 }
 
 // Add an affix to the affix list
-function add_affix(element,
-                   affix_key = null,
-                   affix_compare = null,
-                   affix_compare_value = null) {
+function add_affix(
+    element,
+    affix_key = null,
+    affix_compare = null,
+    affix_compare_value = null
+) {
     let affix_value;
     if (affix_key !== null) {
         element = element.find('.affix-list').parent();
         let affixes = element.find('select');
-        affix_value = affixes.find('option[data-key="' + affix_key + '"]').data('value');
+        affix_value = affixes.find('option[data-key="' + affix_key + '"]').data(
+            'value');
     } else {
         // Get the affix key and value
         let affix = element.find('select').children('option:selected');
@@ -727,6 +725,9 @@ function add_unique(filter_override = null) {
     let close_button = close_template.clone();
     close_button.show();
     close_button.insertBefore(new_unique.find('u'));
+
+    // todo: Add a move dropdown, to make the unique override a gear slot
+    // Add a move button to the new unique from the template
 
     // Set up the template for uniques
     new_unique.find('u').text('Unique');
@@ -823,8 +824,7 @@ function add_unique(filter_override = null) {
                     if (affix.length >= 3) {
                         compare = affix[2];
                     }
-                }
-                else if (typeof affix === 'object') {
+                } else if (typeof affix === 'object') {
                     key = affix['name'];
                     if (affix.hasOwnProperty('value')) {
                         value = affix['value'];
@@ -832,8 +832,7 @@ function add_unique(filter_override = null) {
                     if (affix.hasOwnProperty('comparison')) {
                         compare = affix['comparison'];
                     }
-                }
-                else if (typeof affix === 'string') {
+                } else if (typeof affix === 'string') {
                     key = affix;
                 }
 
@@ -868,8 +867,7 @@ function add_unique(filter_override = null) {
                     if (affix.length >= 3) {
                         compare = affix[2];
                     }
-                }
-                else if (typeof affix === 'object') {
+                } else if (typeof affix === 'object') {
                     key = affix['name'];
                     if (affix.hasOwnProperty('value')) {
                         value = affix['value'];
@@ -877,8 +875,7 @@ function add_unique(filter_override = null) {
                     if (affix.hasOwnProperty('comparison')) {
                         compare = affix['comparison'];
                     }
-                }
-                else if (typeof affix === 'string') {
+                } else if (typeof affix === 'string') {
                     key = affix;
                 }
 
