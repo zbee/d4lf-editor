@@ -1,12 +1,13 @@
-// Selectors
+//region Selectors
 let start = $('#start'); // Splash page
 let editor = $('#editor'); // Editor page
 let filter_template = $('#base-filter > div');
 let blank_filter = $('#blank div');
 let input = document.createElement('input');
+//endregion
 
-// Constants
-// For editor
+//region Constants
+//region For the Editor
 const original_editor = editor.clone();
 const editor_layout = [
     {slot: 'helm', filters: {},},
@@ -43,7 +44,16 @@ const comparison = {
 };
 const new_filter = true;
 const existing_filter = false;
-// For affixes
+//endregion
+
+//region For unique-to-slot mapping
+const mapping_label = 'd4lf-editor_uniques_mapping';
+const mapping_label_separator = '------------';
+const mapping_separator = '--';
+const mapping_key_separator = ':';
+//endregion
+
+//region For abbreviating affixes
 const affix_abbreviations = {
     'evade_grants_movement_speed_for_second': 'evade gives speed',
     'attacks_reduce_evades_cooldown_by_seconds': 'attacks reduce evade cd',
@@ -71,7 +81,9 @@ const affix_dynamic_abbreviations = {
         ['critical_strike_chance_against', 'crit vs:'],
     ],
 };
-// For the editor itself
+//endregion
+
+//region For the Editor itself
 const version = '0.0.0(season5)';
 const supported_d4lf = 'v5.7.3';
 const yaml_header_comment = ''
@@ -80,13 +92,16 @@ const yaml_header_comment = ''
 // Writing the version numbers to the web page
 $('.version').text(version);
 $('.supported-d4lf').text(supported_d4lf);
+//endregion
+//endregion
 
-// Working data
+//region Working Data
 let editor_source = null;
 let editor_data = editor_layout; // Editor working data
 let filter = {}; // Loaded filter data
 let file = null; // Uploaded file
 let reader = new FileReader(); // File reader
+//endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
 
