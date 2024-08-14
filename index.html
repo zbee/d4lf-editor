@@ -105,7 +105,9 @@
              data-key="aspect-value">
         <small>Minimum Unique Aspect roll</small>
         <input type="number" min="0" max="3000"
-               style="width: 4em; padding: 2px 6px" value="0">
+               style="width:4em;padding: 2px 6px 3px;
+               border-top-left-radius:0;
+               border-bottom-left-radius: 0;" value="0">
         <span class="comparison button" data-current="larger"
               data-key="aspect-comparison"
               onclick="change_comparison($(this))"
@@ -169,6 +171,9 @@
     <span class="close" onclick="$(this).parent().remove()"></span>
   </code>
   <!--endregion-->
+  <span id="base-unique-close" class="close"
+        onclick="$(this).parent().parent().remove()"
+        style="display:none;padding-right:10px"></span>
   <!--endregion-->
 
   <div id="filters">

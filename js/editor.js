@@ -3,6 +3,8 @@
 let start = $('#start'); // Splash page
 let editor = $('#editor'); // Editor page
 let filter_template = $('#base-filter > div');
+let affix_template = $('#base-affix');
+let close_template = $('#base-unique-close');
 let blank_filter = $('#blank div');
 let input = document.createElement('input');
 //endregion
@@ -406,7 +408,7 @@ function add_affix(element) {
     }
 
     // Add the affix to .affixes, based off of #base-affix
-    let new_affix = $('#base-affix').clone();
+    let new_affix = affix_template.clone();
     new_affix.show();
     new_affix.fadeOut(0);
     let affix_text = new_affix.find('p');
@@ -429,12 +431,17 @@ function add_unique() {
     // Build a new filter element from the template
     let new_unique = filter_template.clone();
 
-    // add an id with a unique number, that isn't already in use
+    // Add an id with a unique number, that isn't already in use
     let random_id = Math.floor(Math.random() * 10000);
     while ($('#unique-' + random_id).length) {
         random_id = Math.floor(Math.random() * 10000);
     }
     new_unique.attr('id', 'unique-' + random_id);
+
+    // Add a close button to the new unique from the template
+    let close_button = close_template.clone();
+    close_button.show();
+    close_button.insertBefore(new_unique.find('u'));
 
     // Set up the template for uniques
     new_unique.find('u').text('Unique');

@@ -118,8 +118,9 @@ code {
   margin-left: 2px;
 }
 
-#editor #filters div[id] .affix-group .affixes .close::before {
+span.close::before {
   content: "\2716";
+  cursor: pointer;
 }
 
 #editor #filters div[id] .affix-group .affixes p {
