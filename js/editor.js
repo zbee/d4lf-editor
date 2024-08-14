@@ -97,6 +97,11 @@ const affix_abbreviations = {
     'maximum_evade_charges': 'max evades',
     'cooldown_reduction': 'cdr',
     'resistance_to_all_elements': 'resist all',
+    'maximum_life': 'max hp',
+    'critical_strike_chance': 'crit chance',
+    'critical_strike_damage': 'crit damage',
+    'attack_speed': 'atk speed',
+    'movement_speed': 'move speed',
 }
 const affix_dynamic_abbreviations = {
     'lucky_hit_': [
@@ -675,7 +680,8 @@ function add_affix(element,
 
     // Abbreviate the affix if it's too long, or if it's on the list with shorter names
     let abbr = abbreviate_affix(affix_key);
-    if (abbr !== affix_key) {
+    let no__affix_key = affix_key.replace(/_/g, ' ');
+    if (abbr !== no__affix_key) {
         affix_text.html('<abbr title="' + affix_value + '">' + abbr + '</abbr>');
     }
 
