@@ -139,40 +139,7 @@
         <!--endregion-->
         <small class="affixes" data-key="count">
           <!-- Affixes will be added here -->
-
-          <!--region Example Affixes-->
-          <code>
-            <p class="affix" data-key="maximum_life">
-              maximum life
-            </p>
-            <span class="button" data-current="larger"
-                  data-key="affix-comparison"
-                  onclick="change_comparison($(this))">
-              &#10095;
-            </span>
-            <input type="number" min="0" max="3000" value="0"
-                   data-key="affix-value">
-            <span class="close"></span>
-          </code>
-          <code>
-            <p>cdr</p>
-            <span class="comparison button"
-                  data-current="larger">
-              &#10095;
-            </span>
-            <input type="number" min="0" max="5" value="0">
-            <span class="close"></span>
-          </code>
-          <code>
-            <p>intelligence</p>
-            <span class="comparison button"
-                  data-current="larger">
-              &#10095;
-            </span>
-            <input type="number" min="0" max="5" value="0">
-            <span class="close"></span>
-          </code>
-          <!--endregion-->
+          <div class="affix-target" style="display: none" ignore></div>
         </small>
       </div>
       <!--endregion-->
@@ -181,6 +148,21 @@
   <div id="blank" style="display: none">
     <div style="height: 1px"></div>
   </div>
+  <!--region Affix Template-->
+  <code id="base-affix" style="display: none">
+    <p class="affix" data-key="error_affix">
+      unknown affix
+    </p>
+    <span class="button" data-current="larger"
+          data-key="affix-comparison"
+          onclick="change_comparison($(this))">
+              &#10095;
+            </span>
+    <input type="number" min="0" max="3000" value="0"
+           data-key="affix-value">
+    <span class="close"></span>
+  </code>
+  <!--endregion-->
   <!--endregion-->
 
   <div id="filters">

@@ -348,3 +348,34 @@ function toggle_unique_aspect(element) {
         element.parent().parent().find('.unique-roll').fadeIn("slow");
     }
 }
+
+// Add an affix to the affix list
+function add_affix(element) {
+    // Get the affix key and value
+    let affix = element.find('select').children('option:selected');
+    let affix_key = affix.data('key');
+    let affix_value = affix.data('value');
+
+    // Bail if no value
+    if (affix_value === '') {
+        return;
+    }
+
+    // Add the affix to .affixes, based off of #base-affix
+    let new_affix = $('#base-affix').clone();
+    new_affix.show();
+    new_affix.fadeOut(0);
+    let affix_text = new_affix.find('p');
+    affix_text.data('key', affix_key);
+    affix_text.text(affix_value);
+
+    // Abbreviate the affix if it's too long, or if it's on the list with shorter names
+    let abbr = abbreviate_affix(affix_key);
+    if (abbr !== affix_key) {
+        affix_text.html('<abbr title="' + affix_value + '">' + abbr + '</abbr>');
+    }
+
+    // Add the affix to the affix list
+    element.parent().find('.affixes').append(new_affix);
+    new_affix.fadeIn("slow");
+}
