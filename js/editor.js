@@ -14,24 +14,24 @@ let input = document.createElement('input');
 //region For the Editor
 const original_editor = editor.clone();
 const editor_layout = [
-    {slot: 'helm', filters: {},},
-    {slot: 'main_hand', filters: {},},
+    {slot: 'helm', filters: null,},
+    {slot: 'main_hand', filters: null,},
     {},
 
-    {slot: 'chest', filters: {},},
-    {slot: 'off_hand', filters: {},},
-    {slot: 'amulet', filters: {},},
+    {slot: 'chest', filters: null,},
+    {slot: 'off_hand', filters: null,},
+    {slot: 'amulet', filters: null,},
 
-    {slot: 'gloves', filters: {},},
+    {slot: 'gloves', filters: null,},
     {},
-    {slot: 'ring', filters: {},},
+    {slot: 'ring', filters: null,},
 
-    {slot: 'pants', filters: {},},
-    {slot: 'left_hand', filters: {},},
-    {slot: 'other_ring', filters: {},},
+    {slot: 'pants', filters: null,},
+    {slot: 'left_hand', filters: null,},
+    {slot: 'other_ring', filters: null,},
 
-    {slot: 'boots', filters: {},},
-    {slot: 'right_hand', filters: {},},
+    {slot: 'boots', filters: null,},
+    {slot: 'right_hand', filters: null,},
 ];
 const one_handed_weapons = [
     'Axe',
@@ -71,6 +71,16 @@ const comparison = {
 };
 const new_filter = true;
 const existing_filter = false;
+const synonyms = {
+    'helm': 'head',
+    'chest': 'chest armor',
+    'amulet': 'neck',
+    'gloves': 'hands',
+    'ring': 'ring',
+    'pants': 'legs',
+    'other_ring': 'ring',
+    'boots': 'feet',
+};
 //endregion
 
 //region For unique-to-slot mapping
@@ -527,6 +537,7 @@ function read_unique_slot_mapping(filter) {
 
 // Check for weapon filters, and fit them to all four weapon slots
 function parse_weapons(unique_mapping) {
+    //region Setup
     let weapons = {
         'main_hand': null,
         'off_hand': null,
@@ -544,7 +555,7 @@ function parse_weapons(unique_mapping) {
     for (let i = 0; i < filter['Affixes'].length; i++) {
         let filter_item = filter['Affixes'][i];
         let name = Object.keys(filter_item)[0];
-        let item_type = filter_item[name]['item_type'];
+        let item_type = filter_item[name]['itemType'];
 
         // Don't support multiple item types in a single filter
         // Make item_type the first type if it's an array of types
@@ -564,7 +575,9 @@ function parse_weapons(unique_mapping) {
             found_weapon_types.push({'name': name, 'type': item_type});
         }
     }
+    //endregion
 
+    //region Unique Assignments
     // Assign unique mappings to weapons, if they exist, then make all the other
     // weapon assignments haphazardly since it came out of the editor
     if (unique_mapping !== false) {
@@ -583,6 +596,7 @@ function parse_weapons(unique_mapping) {
 
         return weapons;
     }
+    //endregion
 
     /*
     console.debug(
@@ -593,6 +607,7 @@ function parse_weapons(unique_mapping) {
     );
     */
 
+    //region Rule Assignments
     // Assign weapons to slots
     // Assign 2H weapons to main-hand and off-hand, if they exist
     if (number_2H_weapons > 0) {
@@ -678,10 +693,114 @@ function parse_weapons(unique_mapping) {
             }
         }
     }
+    //endregion
 
     // Return weapons object
     //console.debug(weapons);
     return weapons;
+}
+
+// Reduce the complexity of a query for searching (and possible results)
+function query_cleaner(query) {
+    // Leave nulls alone
+    if (query === null) {
+        return null;
+    }
+    // If query is an array, select the first element
+    if (Array.isArray(query)) {
+        query = query[0];
+    }
+
+    query = query.toLowerCase();
+    query = query.replace(/_/g, '');
+    query = query.replace(/-/g, '');
+    query = query.replace(/ /g, '');
+    return query;
+}
+
+// Check if there is a synonym for the given string
+function has_synonym(query) {
+    query = query_cleaner(query);
+    return synonyms.hasOwnProperty(query);
+}
+
+// Get the synonym for the given string
+function get_synonym(query) {
+    query = query_cleaner(query);
+    return synonyms[query];
+}
+
+// Search for a filter in the given parsed filter file, by key
+function search_filter_by(key = null, item_type = null, first_search = true) {
+    // Bail on bad queries
+    if (key === null && item_type === null) {
+        return null;
+    }
+    if (key === '' || item_type === '') {
+        return null;
+    }
+
+    // Simplify queries
+    key = query_cleaner(key);
+    item_type = query_cleaner(item_type);
+
+    //region Key Searching
+    if (key !== null) {
+        // Search for the key in the Affixes
+        for (let i = 0; i < filter['Affixes'].length; i++) {
+            let filter_item = filter['Affixes'][i];
+            // use query_cleaner on all keys
+            let filter_key = query_cleaner(Object.keys(filter_item)[0]);
+
+            if (filter_key === key) {
+                //console.debug('search result (A): ', filter_item[key]);
+                return filter_item[key];
+            }
+        }
+
+        // Search for the key in the Uniques
+        for (let i = 0; i < filter['Uniques'].length; i++) {
+            let filter_item = filter['Uniques'][i];
+            if (Array.isArray(filter_item['aspect'])) {
+                if (query_cleaner(filter_item['aspect'][0]) === key) {
+                    //console.debug('search result ([U]): ', filter_item);
+                    return filter_item;
+                }
+            } else {
+                if (query_cleaner(filter_item['aspect']) === key) {
+                    //console.debug('search result (U): ', filter_item);
+                    return filter_item;
+                }
+            }
+        }
+    }
+    //endregion
+    //region Item-Type Searching
+    if (item_type !== null) {
+        // Search for the item_type in the Affixes
+        for (let i = 0; i < filter['Affixes'].length; i++) {
+            let filter_item = filter['Affixes'][i];
+            filter_item = filter_item[Object.keys(filter_item)[0]];
+            let filter_item_type = query_cleaner(filter_item['itemType']);
+            if (filter_item_type === item_type) {
+                //console.debug('search result (I): ', filter_item);
+                return filter_item;
+            }
+        }
+    }
+    //endregion
+
+    // If key has a synonym, search for that
+    if (has_synonym(key) && first_search) {
+        return search_filter_by(get_synonym(key), null, false);
+    }
+    // If item_type has a synonym, search for that
+    if (has_synonym(item_type) && first_search) {
+        return search_filter_by(null, get_synonym(item_type), false);
+    }
+
+    // Return null if nothing found
+    return null;
 }
 
 //endregion
@@ -714,13 +833,78 @@ reader.onload = readerEvent => {
 // To convert a js-yaml-read filter into the same format as editor_layout
 function parse_filter() {
     let filled_data = editor_layout;
+    // Parse unique-to-slot mappings
     let unique_mapping = read_unique_slot_mapping(filter);
     let all_uniques_unslotted = unique_mapping === false;
+    // Parse weapon slots
+    let weapons = parse_weapons(unique_mapping);
 
-    let weapons = parse_weapons(filter, unique_mapping);
+    // Foreach over each slot in the editor layout
+    for (let i = 0; i < editor_layout.length; i++) {
+        let layout_item = editor_layout[i];
+        let slot = layout_item.slot;
 
+        // Skip blanks
+        if (jQuery.isEmptyObject(layout_item)) {
+            continue;
+        }
+
+        // If the slot is a weapon, assign the parsed weapon to it
+        if (slot.includes('hand')) {
+            if (weapons[slot] !== null) {
+                // If array - Unique
+                if (Array.isArray(weapons[slot])) {
+                    layout_item['filters'] = search_filter_by(weapons[slot][0]);
+                }
+                // If string - Affix
+                else {
+                    layout_item['filters'] = search_filter_by(weapons[slot]);
+                }
+            }
+            continue;
+        }
+
+        // If the slot is one assigned to a unique, assign the unique to it
+        if (!all_uniques_unslotted) {
+            if (unique_mapping.hasOwnProperty(slot)) {
+                layout_item['filters'] = search_filter_by(unique_mapping[slot]);
+                continue;
+            }
+            if (has_synonym(slot)) {
+                if (unique_mapping.hasOwnProperty(get_synonym(slot))) {
+                    layout_item['filters'] = search_filter_by(unique_mapping[get_synonym(slot)]);
+                    continue;
+                }
+            }
+        }
+
+        // Set the filter for the slot based solely on item type
+        layout_item['filters'] = search_filter_by(null, slot);
     }
 
-    console.debug(filled_data);
+    // Add the unslotted uniques to the end of the editor layout
+    // If all uniques are unslotted, add them all
+    if (all_uniques_unslotted) {
+        let uniques = filter['Uniques'];
+        for (let i = 0; i < uniques.length; i++) {
+            let unique = uniques[i];
+            let layout_item = {slot: 'unique', filters: unique};
+            filled_data.push(layout_item);
+        }
+    }
+    // If some uniques are slotted, add just the unslotted ones
+    else {
+        let uniques = filter['Uniques'];
+        for (let i = 0; i < uniques.length; i++) {
+            let unique = uniques[i];
+            let aspect = Array.isArray(unique['aspect']) ? unique['aspect'][0] : unique['aspect'];
+            // if aspect is not one of the values in the mapping, add it to the end
+            if (!Object.values(unique_mapping).includes(aspect)) {
+                let layout_item = {slot: 'unique', filters: unique};
+                filled_data.push(layout_item);
+            }
+        }
+    }
+
     return filled_data;
 }
