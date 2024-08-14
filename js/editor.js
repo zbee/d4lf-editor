@@ -1,7 +1,6 @@
 // Selectors
 let start = $('#start'); // Splash page
 let editor = $('#editor'); // Editor page
-let filters = $('#filters'); // Filter container
 let filter_template = $('#base-filter > div');
 let blank_filter = $('#blank div');
 let input = document.createElement('input');
@@ -43,14 +42,14 @@ const comparison = {
     'smaller': '&#10094;',
 };
 // For affixes
-const affix_abbreviatons = {
+const affix_abbreviations = {
     'evade_grants_movement_speed_for_second': 'evade gives speed',
     'attacks_reduce_evades_cooldown_by_seconds': 'attacks reduce evade cd',
     'maximum_evade_charges': 'max evades',
     'cooldown_reduction': 'cdr',
     'resistance_to_all_elements': 'resist all',
 }
-const affix_dynmic_abbreviatons = {
+const affix_dynamic_abbreviations = {
     'lucky_hit_': [
         ['lucky_hit', 'lucky hit'],
         ['critical_strikes_have', '(crit)'],
