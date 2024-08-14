@@ -1,3 +1,4 @@
+//region Variables
 //region Selectors
 let start = $('#start'); // Splash page
 let editor = $('#editor'); // Editor page
@@ -101,6 +102,7 @@ let editor_data = editor_layout; // Editor working data
 let filter = {}; // Loaded filter data
 let file = null; // Uploaded file
 let reader = new FileReader(); // File reader
+//endregion
 //endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
