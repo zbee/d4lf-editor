@@ -165,7 +165,7 @@ let reader = new FileReader(); // File reader
 
 // List of all affixes
 $.getJSON(
-    'https://raw.githubusercontent.com/aeon0/d4lf/main/assets/lang/enUS/affixes.json',
+    'https://d4lf-editor.zbee.codes/json/affixes.json',
     function (data) {
         $.each(data, function (key, value) {
             $('.affix-list').append(
@@ -179,7 +179,7 @@ $.getJSON(
 
 // List of just weapons
 $.getJSON(
-    'https://raw.githubusercontent.com/aeon0/d4lf/main/assets/lang/enUS/item_types.json',
+    'https://d4lf-editor.zbee.codes/json/item_types.json',
     function (data) {
         $.each(data, function (key, value) {
             // noinspection JSUnresolvedReference
@@ -210,7 +210,7 @@ $.getJSON(
 
 // List of all uniques
 $.getJSON(
-    'https://raw.githubusercontent.com/aeon0/d4lf/main/assets/lang/enUS/uniques.json',
+    'https://d4lf-editor.zbee.codes/json/uniques.json',
     function (data) {
         $.each(data, function (key, value) {
             // Filter out some of the dud values
