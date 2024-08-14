@@ -399,3 +399,25 @@ function add_affix(element) {
     element.parent().find('.affixes').append(new_affix);
     new_affix.fadeIn("slow");
 }
+
+// Add a new filter, for uniques
+function add_unique() {
+    // Build a new filter element from the template
+    let new_unique = filter_template.clone();
+    // add an id with a unique number, that isn't already in use
+    let random_id = Math.floor(Math.random() * 10000);
+    while ($('#unique-' + random_id).length) {
+        random_id = Math.floor(Math.random() * 10000);
+    }
+    new_unique.attr('id', 'unique-' + random_id);
+
+    new_unique.find('u').text('Unique');
+    new_unique.find('.select-item-type').hide();
+    new_unique.find('.unique-roll').show();
+    new_unique.show();
+    new_unique.fadeOut(0);
+
+    // Add the unique to the unique list
+    new_unique.insertAfter('#uniques');
+    new_unique.fadeIn(800);
+}
