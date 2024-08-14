@@ -531,6 +531,17 @@ function build_editor() {
         // Place the editor slot
         new_filter.insertBefore('#controls');
     })
+
+    // Iterate over uniques
+    editor_data.forEach(function (unique) {
+        // Skip non-uniques
+        if (unique.slot !== 'unique') {
+            return;
+        }
+
+        // Add the unique
+        add_unique(unique.filters);
+    });
 }
 
 // Return to the home page
@@ -701,7 +712,7 @@ function add_affix(element,
 }
 
 // Add a new filter, for uniques
-function add_unique() {
+function add_unique(filter_override = null) {
     // Build a new filter element from the template
     let new_unique = filter_template.clone();
 
@@ -727,6 +738,160 @@ function add_unique() {
     new_unique.find('.unique-selection select').children().first().remove();
     // Remove the ? from the unique label
     new_unique.find('.unique-selection small').text('Unique');
+
+    // Fill from an existing filter
+    if (filter_override !== null) {
+        // Fill the minPower
+        if (filter_override.hasOwnProperty('minPower')) {
+            new_unique
+                .find('[data-key="minPower"] input')
+                .val(filter_override['minPower']);
+        }
+
+        // Fill the Unique
+        if (filter_override.hasOwnProperty('aspect')) {
+            let unique = filter_override['aspect'];
+            if (Array.isArray(unique)) {
+                unique = unique[0];
+            }
+            // Set the unique
+            new_unique
+                .find('.unique-list option[data-key="' + unique + '"]')
+                .attr('selected', '');
+            // Unselect the default option
+            new_unique.find('.unique-list option')
+                      .first()
+                      .removeAttr('selected');
+            // Show the unique roll if unique is selected
+            new_unique.find('.unique-roll').show();
+            // Hide the item type selection if unique is selected
+            new_unique.find('.select-item-type').hide();
+        }
+
+        // Fill the Unique aspect roll
+        if (filter_override.hasOwnProperty('aspect')) {
+            let roll = filter_override['aspect'];
+            if (Array.isArray(roll)) {
+                let value = '0';
+                if (roll.length >= 2) {
+                    value = roll[1];
+                }
+                let compare = ['larger', comparison['larger']];
+                if (roll.length >= 3) {
+                    compare = [roll[2], comparison[roll[2]]];
+                }
+                new_unique.find('.unique-roll input').val(value);
+                new_unique.find('.unique-roll .comparison').html(compare[1]);
+                new_unique.find('.unique-roll .comparison').data(
+                    'current',
+                    compare[0]
+                );
+            }
+        }
+
+        // Fill minGreaterAffixCount
+        if (filter_override.hasOwnProperty('minGreaterAffixCount')) {
+            new_unique
+                .find('[data-key="minGreaterAffixCount"] input')
+                .val(filter_override['minGreaterAffixCount']);
+        }
+
+        // Fill minCount
+        if (filter_override.hasOwnProperty('minCount')) {
+            new_filter
+                .find('[data-key="minCount"] input')
+                .val(filter_override['minCount']);
+        }
+
+        // Fill affixes
+        if (filter_override.hasOwnProperty('affix')
+            && filter_override['affix'].length > 0) {
+            // Foreach affix in the affixPool.count
+            for (let i = 0; i < filter_override['affix'].length; i++) {
+                let affix = filter_override['affix'][i];
+                // noinspection DuplicatedCode
+                let key = '';
+                let value = 0;
+                let compare = 'larger';
+
+                // Parse different layouts of affixes
+                if (Array.isArray(affix)) {
+                    key = affix[0];
+                    if (affix.length >= 2) {
+                        value = affix[1];
+                    }
+                    if (affix.length >= 3) {
+                        compare = affix[2];
+                    }
+                }
+                else if (typeof affix === 'object') {
+                    key = affix['name'];
+                    if (affix.hasOwnProperty('value')) {
+                        value = affix['value'];
+                    }
+                    if (affix.hasOwnProperty('comparison')) {
+                        compare = affix['comparison'];
+                    }
+                }
+                else if (typeof affix === 'string') {
+                    key = affix;
+                }
+
+                // Add the affix to the affix list
+                add_affix(
+                    new_unique,
+                    key,
+                    compare,
+                    value
+                );
+            }
+        }
+
+        // Fill inherent affixes
+        if (filter_override.hasOwnProperty('inherentPool')
+            && filter_override['inherentPool'][0].hasOwnProperty('count')
+            && filter_override['inherentPool'][0]['count'].length > 0) {
+            // Foreach affix in the affixPool.count
+            for (let i = 0; i < filter_override['inherentPool'][0]['count'].length; i++) {
+                let affix = filter_override['inherentPool'][0]['count'][i];
+                // noinspection DuplicatedCode
+                let key = '';
+                let value = 0;
+                let compare = 'larger';
+
+                // Parse different layouts of affixes
+                if (Array.isArray(affix)) {
+                    key = affix[0];
+                    if (affix.length >= 2) {
+                        value = affix[1];
+                    }
+                    if (affix.length >= 3) {
+                        compare = affix[2];
+                    }
+                }
+                else if (typeof affix === 'object') {
+                    key = affix['name'];
+                    if (affix.hasOwnProperty('value')) {
+                        value = affix['value'];
+                    }
+                    if (affix.hasOwnProperty('comparison')) {
+                        compare = affix['comparison'];
+                    }
+                }
+                else if (typeof affix === 'string') {
+                    key = affix;
+                }
+
+                // Add the affix to the affix list
+                add_affix(
+                    new_unique,
+                    key,
+                    compare,
+                    value
+                );
+            }
+        }
+    }
 
     // Add the unique to the unique list
     new_unique.insertAfter('#uniques');
