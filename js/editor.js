@@ -1,4 +1,5 @@
-//region Variables
+// noinspection JSCheckFunctionSignatures
+// region Variables
 //region Selectors
 let start = $('#start'); // Splash page
 let editor = $('#editor'); // Editor page
@@ -151,6 +152,7 @@ $.getJSON(
     'https://raw.githubusercontent.com/aeon0/d4lf/main/assets/lang/enUS/item_types.json',
     function (data) {
         $.each(data, function (key, value) {
+            // noinspection JSUnresolvedReference
             let key_check = key.toLowerCase();
             if (
                 key_check.includes('axe')
@@ -524,7 +526,7 @@ function read_unique_slot_mapping(filter) {
 }
 
 // Check for weapon filters, and fit them to all four weapon slots
-function parse_weapons(loaded_filter, unique_mapping) {
+function parse_weapons(unique_mapping) {
     let weapons = {
         'main_hand': null,
         'off_hand': null,
@@ -539,11 +541,10 @@ function parse_weapons(loaded_filter, unique_mapping) {
     let number_off_hand_weapons = 0;
 
     // Find all weapon filters
-    for (let i = 0; i < loaded_filter['Affixes'].length; i++) {
-        let filter_item = loaded_filter['Affixes'][i];
+    for (let i = 0; i < filter['Affixes'].length; i++) {
+        let filter_item = filter['Affixes'][i];
         let name = Object.keys(filter_item)[0];
-        let filter = filter_item[name];
-        let item_type = filter['item_type'];
+        let item_type = filter_item[name]['item_type'];
 
         // Don't support multiple item types in a single filter
         // Make item_type the first type if it's an array of types
@@ -632,6 +633,7 @@ function parse_weapons(loaded_filter, unique_mapping) {
         for (let i = 0; i < found_weapon_types.length; i++) {
             let weapon = found_weapon_types[i];
             if (one_handed_weapons.includes(weapon['type'])) {
+                // noinspection DuplicatedCode
                 if (weapons['main_hand'] === null) {
                     weapons['main_hand'] = weapon['name'];
                 } else {
@@ -659,6 +661,7 @@ function parse_weapons(loaded_filter, unique_mapping) {
             continue;
         }
 
+        // noinspection DuplicatedCode
         if (weapons['main_hand'] === null) {
             weapons['main_hand'] = weapon['name'];
         } else {
@@ -697,7 +700,7 @@ reader.onload = readerEvent => {
         console.debug(filter);
 
         // Save the filter
-        editor_data = parse_filter(filter);
+        editor_data = parse_filter();
         editor_source = existing_filter;
         // Show the editor
         show_editor();
@@ -709,12 +712,15 @@ reader.onload = readerEvent => {
 }
 
 // To convert a js-yaml-read filter into the same format as editor_layout
-function parse_filter(filter) {
+function parse_filter() {
     let filled_data = editor_layout;
     let unique_mapping = read_unique_slot_mapping(filter);
     let all_uniques_unslotted = unique_mapping === false;
 
     let weapons = parse_weapons(filter, unique_mapping);
 
+    }
+
+    console.debug(filled_data);
     return filled_data;
 }
