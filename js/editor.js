@@ -6,6 +6,7 @@ let editor = $('#editor'); // Editor page
 let filter_template = $('#base-filter > div');
 let affix_template = $('#base-affix');
 let close_template = $('#base-unique-close');
+let move_template = $('#base-unique-move');
 let blank_filter = $('#blank div');
 let input = document.createElement('input');
 //endregion
@@ -713,6 +714,8 @@ function add_affix(
 function add_unique(filter_override = null) {
     // Build a new filter element from the template
     let new_unique = filter_template.clone();
+    new_unique.css('overflow', 'visible');
+    new_unique.find('div:first').css('position', 'relative');
 
     // Add an id with a unique number, that isn't already in use
     let random_id = Math.floor(Math.random() * 10000);
@@ -728,6 +731,9 @@ function add_unique(filter_override = null) {
 
     // todo: Add a move dropdown, to make the unique override a gear slot
     // Add a move button to the new unique from the template
+    let move_button = move_template.clone();
+    move_button.show();
+    move_button.insertAfter(new_unique.find('u'));
 
     // Set up the template for uniques
     new_unique.find('u').text('Unique');
@@ -894,6 +900,9 @@ function add_unique(filter_override = null) {
     new_unique.insertAfter('#uniques');
     new_unique.fadeIn(800);
 }
+
+// todo: move_unique(element) - element is the <select>. should use update_element()
+//  (element.parent().parent() is the span, 2 more is the unique div)
 
 //endregion
 
@@ -1225,7 +1234,19 @@ function search_filter_by(key = null, item_type = null, first_search = true) {
     return null;
 }
 
+// todo: update_element() - update the element with the filter object
+
+// todo: change build_editor() and add_unique() to use update_element()
+
 //endregion
+
+////////////////////////////////////////////////////////////////////////////////////
+//region Saving Utilities
+////////////////////////////////////////////////////////////////////////////////////
+
+// todo: parse_element() - parse the element into a filter object
+
+// endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
 //region Loading and Saving Filters

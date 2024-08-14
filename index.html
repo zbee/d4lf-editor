@@ -179,6 +179,28 @@
   <span id="base-unique-close" class="close"
         onclick="$(this).parent().parent().remove()"
         style="display:none;padding-right:10px"></span>
+  <!--region Unique Move Template-->
+  <span id="base-unique-move" class="move"
+        style="display:none;position:absolute;top:-22px">
+    <small style="padding:0 2px;background:#222">
+    Move
+    <select class="move-to" style="width: 5em;padding: 2px 5px"
+            onchange="move_unique($(this))">
+      <option value="" selected disabled>To ...</option>
+      <option value="helm">Helm</option>
+      <option value="chest">Chest</option>
+      <option value="gloves">Gloves</option>
+      <option value="pants">Pants</option>
+      <option value="boots">Boots</option>
+      <option value="main_hand">Main-Hand</option>
+      <option value="off_hand">Off-Hand</option>
+      <option value="left_hand">Left-Hand</option>
+      <option value="right_hand">Right-Hand</option>
+      <option value="amulet">Amulet</option>
+      <option value="ring">Ring</option>
+      <option value="other_ring">Other Ring</option>
+    </select></small></span>
+  <!--endregion-->
   <!--endregion-->
 
   <div id="filters">
