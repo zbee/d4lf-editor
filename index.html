@@ -117,15 +117,15 @@
       </label>
       <!--endregion-->
 
-      <!--region MinGreaterAffixCount-->
-      <label data-key="minGreaterAffixCount">
-        <small>Minimum Greater Affixes</small>
-        <input type="number" min="0" max="5" value="0">
-      </label>
-      <!--endregion-->
-
       <!--region Affixes-->
       <div class="affix-group" data-key="affixPool">
+        <!--region MinGreaterAffixCount-->
+        <label data-key="minGreaterAffixCount">
+          <small>Minimum Greater Affixes from Below</small>
+          <input type="number" min="0" max="5" value="0">
+        </label>
+        <!--endregion-->
+
         <!--region minCount-->
         <label data-key="minCount">
           <small>Minimum Affixes from Below</small>
@@ -165,13 +165,19 @@
     <p class="affix" data-key="error_affix">
       unknown affix
     </p>
-    <span class="button" data-current="larger"
+    <span class="comparison button" data-current="larger"
           data-key="affix-comparison"
           onclick="change_comparison($(this))">
               &#10095;
             </span>
     <input type="number" min="0" max="3000" value="0"
            data-key="affix-value">
+    <span class="state button" data-current="one-of"
+          title="Any of these affixes, according to the Minimum count, can be present"
+          data-key="affix-pooling"
+          onclick="change_affix_state($(this))">
+              &#8226;
+            </span>
     <span class="close"
           onclick="$(this).parent().remove()"></span>
   </code>
