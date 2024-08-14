@@ -81,7 +81,8 @@
       <label class="select-item-type" style="display: none"
              data-key="itemType">
         <small>Item Type</small>
-        <select class="item-list" style="float: right">
+        <select class="item-list" style="float: right"
+                onchange="toggle_unique_or_item($(this))">
           <option value="" selected></option>
         </select>
       </label>
@@ -90,7 +91,8 @@
       <label class="unique-selection" data-key="aspect">
         <small>Unique?</small>
         <select class="unique-list"
-                style="float: right;width:16em">
+                style="float: right;width:16em"
+                onchange="toggle_unique_or_item($(this));toggle_unique_aspect($(this))">
           <option value="" selected>No</option>
         </select>
       </label>

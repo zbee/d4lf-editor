@@ -253,7 +253,8 @@ function to_home() {
 
 // Editor Use
 
-function change_comparison (element) {
+// Alternate the comparison operator for an aspect or affix
+function change_comparison(element) {
     let current_comparison = element.data('current');
     if (current_comparison === 'larger') {
         element.data('current', 'smaller');
@@ -261,5 +262,42 @@ function change_comparison (element) {
     } else {
         element.data('current', 'larger');
         element.html(comparison['larger']);
+    }
+}
+
+// Show both Item-Type and Unique selectors without values, with values: only
+// show one or the other
+function toggle_unique_or_item(element) {
+    let value = element.children('option:selected').val();
+
+    // Show both
+    if (value === '') {
+        $('.select-item-type').fadeIn("slow");
+        $('.unique-selection').fadeIn("slow");
+    }
+    // Hide the other
+    else {
+        let parent_class = element.parent().attr('class');
+
+        if (parent_class === 'select-item-type') {
+            element.parent().parent().find('.unique-selection').hide();
+        } else {
+            element.parent().parent().find('.select-item-type').hide();
+        }
+    }
+}
+
+// Show the Unique sub-option to control the Unique's aspect only when a Unique
+// is selected
+function toggle_unique_aspect (element) {
+    let value = element.children('option:selected').val();
+
+    // Show the Unique sub-option for the Unique aspect
+    if (value === '') {
+        element.parent().parent().find('.unique-roll').hide();
+    }
+    // Hide the Unique sub-option
+    else {
+        element.parent().parent().find('.unique-roll').fadeIn("slow");
     }
 }
