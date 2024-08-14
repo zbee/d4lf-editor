@@ -217,27 +217,6 @@ input.onchange = e => {
     reader.readAsText(file, 'UTF-8');
 }
 
-// Parse the given filter
-reader.onload = readerEvent => {
-    let content = readerEvent.target.result;
-    try {
-        // Load the filter
-        // noinspection JSCheckFunctionSignatures
-        filter = jsyaml.load(content);
-        console.debug(filter);
-
-        // Save the filter
-        editor_data = parse_filter(filter);
-        editor_source = existing_filter;
-        // Show the editor
-        show_editor();
-    } catch (e) {
-        console.debug(content);
-        console.debug(filter);
-        console.error(e);
-    }
-}
-
 // Actually build and show the editor page
 function show_editor() {
     // Clear the page
@@ -461,11 +440,11 @@ function add_unique() {
 //endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
-//region Loading and Saving Filters
+//region Loading Utilities
 ////////////////////////////////////////////////////////////////////////////////////
 
 // Check for an existing unique-to-slot mapping, and parse it if it exists
-function unique_slot_mapping(filter) {
+function read_unique_slot_mapping(filter) {
     let uniques = filter['Uniques'];
     let affixes = filter['Affixes'];
 
@@ -522,10 +501,38 @@ function unique_slot_mapping(filter) {
     return false;
 }
 
+//endregion
+
+////////////////////////////////////////////////////////////////////////////////////
+//region Loading and Saving Filters
+////////////////////////////////////////////////////////////////////////////////////
+
+// Parse the given filter
+reader.onload = readerEvent => {
+    let content = readerEvent.target.result;
+    try {
+        // Load the filter
+        // noinspection JSCheckFunctionSignatures
+        filter = jsyaml.load(content);
+        console.debug(filter);
+
+        // Save the filter
+        editor_data = parse_filter(filter);
+        editor_source = existing_filter;
+        // Show the editor
+        show_editor();
+    } catch (e) {
+        console.debug(content);
+        console.debug(filter);
+        console.error(e);
+    }
+}
+
 // To convert a js-yaml-read filter into the same format as editor_layout
 function parse_filter(filter) {
-    let unique_mapping = unique_slot_mapping(filter);
+    let filled_data = editor_layout;
+    let unique_mapping = read_unique_slot_mapping(filter);
     let all_uniques_unslotted = unique_mapping === false;
 
-    return editor_layout;
+    return filled_data;
 }
