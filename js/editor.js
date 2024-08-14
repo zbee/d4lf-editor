@@ -205,6 +205,72 @@ function to_editor(filter_selection) {
     }
 }
 
+// Check for an existing unique-to-slot mapping, and parse it if it exists
+function unique_slot_mapping(filter) {
+    let uniques = filter['Uniques'];
+    let affixes = filter['Affixes'];
+
+    // Build simple list of aspect names of uniques
+    let unique_aspects = [];
+    for (let i = 0; i < uniques.length; i++) {
+        let unique = uniques[i];
+        let aspect = unique['aspect'][0];
+        unique_aspects.push(aspect);
+    }
+
+    console.debug(unique_aspects, affixes);
+
+    // Foreach array element, check if it's a unique-to-slot mapping
+    for (let i = 0; i < affixes.length; i++) {
+        let affix = affixes[i];
+        // Get the one key in the object
+        let key = Object.keys(affix)[0];
+        // Check if the key is a unique-to-slot mapping
+        if (key.startsWith(mapping_label)) {
+            // Get just the mapping data
+            let mapping = key.split(mapping_label_separator)[1];
+            // Split maps into individual mappings
+            let mappings = mapping.split(mapping_separator);
+
+            // Build a mapping object
+            let mapping_data = {};
+            for (let j = 0; j < mappings.length; j++) {
+                // Split the mapping into key and value
+                let mapping_parts = mappings[j].split(mapping_key_separator);
+                // Check that the mapping  data is valid
+                if (mapping_parts.length !== 2) {
+                    continue;
+                }
+                // Check that there is a unique for the mapping
+                if (!unique_aspects.includes(mapping_parts[1])) {
+                    continue;
+                }
+
+                // Add the mapping to the mapping object
+                mapping_data[mapping_parts[0]] = mapping_parts[1];
+            }
+
+            // Check that the mapping object has data
+            if (jQuery.isEmptyObject(mapping_data)) {
+                continue;
+            }
+
+            // Return the mapping data
+            return mapping_data;
+        }
+    }
+
+    return false;
+}
+
+// To convert a js-yaml-read filter into the same format as editor_layout
+function parse_filter(filter) {
+    let unique_mapping = unique_slot_mapping(filter);
+    let all_uniques_unslotted = unique_mapping === false;
+
+    return editor_layout;
+}
+
 // Load the given filter file
 input.onchange = e => {
     file = e.target.files[0];
@@ -221,7 +287,7 @@ reader.onload = readerEvent => {
         console.debug(filter);
 
         // Save the filter
-        editor_data = editor_layout;
+        editor_data = parse_filter(filter);
         editor_source = existing_filter;
         // Show the editor
         show_editor();
@@ -250,6 +316,10 @@ function build_editor() {
 
     // Iterate over equipment slots
     editor_data.forEach(function (layout_item) {
+        // Skip slots labelled 'unique'
+        if (layout_item.slot === 'unique') {
+            return;
+        }
         // Fill blank slots
         if (jQuery.isEmptyObject(layout_item)) {
             (blank_filter.clone()).insertBefore('#controls');
