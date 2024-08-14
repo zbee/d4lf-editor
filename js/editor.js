@@ -32,6 +32,29 @@ const editor_layout = [
     {slot: 'boots', filters: {},},
     {slot: 'right_hand', filters: {},},
 ];
+const one_handed_weapons = [
+    'Axe',
+    'Dagger',
+    'Mace',
+    'Scythe',
+    'Sword',
+    'Wand',
+];
+const off_hand_weapons = [
+    'Focus',
+    'Shield',
+    'Totem',
+];
+const two_handed_weapons = [
+    'Axe2H',
+    'Bow',
+    'Crossbow2H',
+    'Mace2H',
+    'Polearm',
+    'Scythe2H',
+    'Staff',
+    'Sword2H',
+];
 const implicit_affixes = {
     'boots': [
         'evade_grants_movement_speed_for_second',
@@ -96,7 +119,6 @@ const yaml_header_comment = ''
 $('.version').text(version);
 $('.supported-d4lf').text(supported_d4lf);
 //endregion
-//endregion
 
 //region Working Data
 let editor_source = null;
@@ -104,7 +126,6 @@ let editor_data = editor_layout; // Editor working data
 let filter = {}; // Loaded filter data
 let file = null; // Uploaded file
 let reader = new FileReader(); // File reader
-//endregion
 //endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +198,6 @@ $.getJSON(
         });
     }
 );
-//endregion
 //endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -313,6 +333,7 @@ function build_affixes(element) {
 
     return affix_list;
 }
+
 //endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -437,6 +458,7 @@ function add_unique() {
     new_unique.insertAfter('#uniques');
     new_unique.fadeIn(800);
 }
+
 //endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -501,6 +523,164 @@ function read_unique_slot_mapping(filter) {
     return false;
 }
 
+// Check for weapon filters, and fit them to all four weapon slots
+function parse_weapons(loaded_filter, unique_mapping) {
+    let weapons = {
+        'main_hand': null,
+        'off_hand': null,
+        'left_hand': null,
+        'right_hand': null,
+    }
+    let found_weapon_types = [];
+
+    let number_weapons = 0;
+    let number_1H_weapons = 0;
+    let number_2H_weapons = 0;
+    let number_off_hand_weapons = 0;
+
+    // Find all weapon filters
+    for (let i = 0; i < loaded_filter['Affixes'].length; i++) {
+        let filter_item = loaded_filter['Affixes'][i];
+        let name = Object.keys(filter_item)[0];
+        let filter = filter_item[name];
+        let item_type = filter['item_type'];
+
+        // Don't support multiple item types in a single filter
+        // Make item_type the first type if it's an array of types
+        if (Array.isArray(item_type)) {
+            item_type = item_type[0];
+        }
+
+        // Record the weapon type
+        if (one_handed_weapons.includes(item_type)) {
+            number_1H_weapons++;
+            found_weapon_types.push({'name': name, 'type': item_type});
+        } else if (two_handed_weapons.includes(item_type)) {
+            number_2H_weapons++;
+            found_weapon_types.push({'name': name, 'type': item_type});
+        } else if (off_hand_weapons.includes(item_type)) {
+            number_off_hand_weapons++;
+            found_weapon_types.push({'name': name, 'type': item_type});
+        }
+    }
+
+    // Assign unique mappings to weapons, if they exist, then make all the other
+    // weapon assignments haphazardly since it came out of the editor
+    if (unique_mapping !== false) {
+        // Assign unique mappings to weapons
+        for (const [key, value] of Object.entries(unique_mapping)) {
+            if (weapons.hasOwnProperty(key)) {
+                weapons[key] = [value];
+            }
+        }
+        // Assign found weapons - their names must be free if this was through the
+        // filter already
+        for (let i = 0; i < found_weapon_types.length; i++) {
+            let weapon = found_weapon_types[i];
+            weapons[weapon['name']] = weapon['name'];
+        }
+
+        return weapons;
+    }
+
+    /*
+    console.debug(
+        'found:', found_weapon_types,
+        '1H:', number_1H_weapons,
+        '2H:', number_2H_weapons,
+        'OH:', number_off_hand_weapons,
+    );
+    */
+
+    // Assign weapons to slots
+    // Assign 2H weapons to main-hand and off-hand, if they exist
+    if (number_2H_weapons > 0) {
+        for (let i = 0; i < found_weapon_types.length; i++) {
+            let weapon = found_weapon_types[i];
+            if (two_handed_weapons.includes(weapon['type'])) {
+                if (weapons['main_hand'] === null) {
+                    weapons['main_hand'] = weapon['name'];
+                } else {
+                    if (weapons['off_hand'] === null) {
+                        weapons['off_hand'] = weapon['name'];
+                    }
+                }
+            }
+        }
+    }
+    // Assign off-hand weapons to off-hand/right-hand
+    if (number_off_hand_weapons > 0) {
+        if (number_2H_weapons === 0 && weapons['off_hand'] === null) {
+            for (let i = 0; i < found_weapon_types.length; i++) {
+                let weapon = found_weapon_types[i];
+                if (off_hand_weapons.includes(weapon['type'])) {
+                    weapons['off_hand'] = weapon['name'];
+                }
+            }
+        } else {
+            for (let i = 0; i < found_weapon_types.length; i++) {
+                let weapon = found_weapon_types[i];
+                if (off_hand_weapons.includes(weapon['type'])) {
+                    weapons['right_hand'] = weapon['name'];
+                }
+            }
+        }
+    }
+    // Assign 1H weapons to main-hand/left-hand (and off-hand/right-hand, if
+    // there's still more, and each is empty)
+    if (number_1H_weapons > 0) {
+        for (let i = 0; i < found_weapon_types.length; i++) {
+            let weapon = found_weapon_types[i];
+            if (one_handed_weapons.includes(weapon['type'])) {
+                if (weapons['main_hand'] === null) {
+                    weapons['main_hand'] = weapon['name'];
+                } else {
+                    if (weapons['off_hand'] === null) {
+                        weapons['off_hand'] = weapon['name'];
+                    } else {
+                        if (weapons['left_hand'] === null) {
+                            weapons['left_hand'] = weapon['name'];
+                        } else {
+                            if (weapons['right_hand'] === null) {
+                                weapons['right_hand'] = weapon['name'];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // Try to assign any weapons that are left over and are not already assigned
+    for (let i = 0; i < found_weapon_types.length; i++) {
+        let weapon = found_weapon_types[i];
+
+        // Check that weapon name is not already assigned
+        if (Object.values(weapons).includes(weapon['name'])) {
+            continue;
+        }
+
+        if (weapons['main_hand'] === null) {
+            weapons['main_hand'] = weapon['name'];
+        } else {
+            if (weapons['off_hand'] === null) {
+                weapons['off_hand'] = weapon['name'];
+            } else {
+                if (weapons['left_hand'] === null) {
+                    weapons['left_hand'] = weapon['name'];
+                } else {
+                    if (weapons['right_hand'] === null) {
+                        weapons['right_hand'] = weapon['name'];
+                    }
+                }
+            }
+        }
+    }
+
+    // Return weapons object
+    //console.debug(weapons);
+    return weapons;
+}
+
 //endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -533,6 +713,8 @@ function parse_filter(filter) {
     let filled_data = editor_layout;
     let unique_mapping = read_unique_slot_mapping(filter);
     let all_uniques_unslotted = unique_mapping === false;
+
+    let weapons = parse_weapons(filter, unique_mapping);
 
     return filled_data;
 }
