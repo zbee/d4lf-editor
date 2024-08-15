@@ -977,6 +977,20 @@ function add_unique(filter_override = null) {
 // todo: move_unique(element) - element is the <select>. should use update_element()
 //  (element.parent().parent() is the span, 2 more is the unique div)
 
+// Move a unique to a gear slot, deleting the unique
+function move_unique(element) {
+    // Check the target to update with the Unique's data
+    let target = element.parent().parent().find('select')
+                        .children('option:selected').val();
+    // Parse the unique
+    let unique = element.parent().parent().parent().parent();
+    let parsed_unique = parse_element(unique);
+    // Move the unique to the target
+    update_element($('#filters').find('#' + target), parsed_unique);
+    // Remove the unique
+    unique.remove();
+}
+
 //endregion
 
 ////////////////////////////////////////////////////////////////////////////////////
