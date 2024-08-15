@@ -391,6 +391,9 @@ function build_editor() {
                 if (Array.isArray(unique)) {
                     unique = unique[0];
                 }
+                if (typeof unique === 'object') {
+                    unique = unique['name'];
+                }
                 // Set the unique
                 new_filter
                     .find('.unique-list option[data-key="' + unique + '"]')
@@ -1052,7 +1055,13 @@ function read_unique_slot_mapping(filter) {
     let unique_aspects = [];
     for (let i = 0; i < uniques.length; i++) {
         let unique = uniques[i];
-        let aspect = unique['aspect'][0];
+        let aspect = unique['aspect'];
+        if (Array.isArray(aspect)) {
+            aspect = aspect[0];
+        }
+        if (typeof aspect === 'object') {
+            aspect = aspect['name'];
+        }
         unique_aspects.push(aspect);
     }
 
@@ -1334,7 +1343,14 @@ function search_filter_by(key = null, item_type = null, first_search = true) {
                     //console.debug('search result ([U]): ', filter_item);
                     return filter_item;
                 }
-            } else {
+            }
+            else if (typeof input === 'object') {
+                if (query_cleaner(filter_item['aspect']['name']) === key) {
+                    //console.debug('search result ([U]): ', filter_item);
+                    return filter_item;
+                }
+            }
+            else {
                 if (query_cleaner(filter_item['aspect']) === key) {
                     //console.debug('search result (U): ', filter_item);
                     return filter_item;
@@ -1787,7 +1803,11 @@ function parse_filter() {
         let uniques = filter['Uniques'];
         for (let i = 0; i < uniques.length; i++) {
             let unique = uniques[i];
-            let aspect = Array.isArray(unique['aspect']) ? unique['aspect'][0] : unique['aspect'];
+            let aspect = Array.isArray(unique['aspect'])
+                ? unique['aspect'][0]
+                : (typeof unique['aspect'] === 'object'
+                    ? unique['aspect']['name']
+                    : unique['aspect']);
             // if aspect is not one of the values in the mapping, add it to the end
             if (!Object.values(unique_mapping).includes(aspect)) {
                 let layout_item = {slot: 'unique', filters: unique};
