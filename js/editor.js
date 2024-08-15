@@ -597,7 +597,7 @@ function build_affixes(element) {
 
     // Iterate over the affixes
     affixes.each(function () {
-        let affix = $(this).find('p').data('key');
+        let affix = $(this).data('key');
         affix_list.push(affix);
     });
 
@@ -623,8 +623,10 @@ function change_comparison(element) {
 }
 
 // Alternate the state of an affix
+// one-of -> required -> greater -> one-of
 function change_affix_state(element) {
     let current_state = element.data('current');
+    // one-of -> required
     if (current_state === 'one-of') {
         element.data('current', 'required');
         element.html(affix_state['required']);
@@ -632,14 +634,18 @@ function change_affix_state(element) {
             'title',
             "This affix must be present"
         );
-    } else if (current_state === 'required') {
+    }
+    // required -> greater
+    else if (current_state === 'required') {
         element.data('current', 'greater');
         element.html(affix_state['greater']);
         element.attr(
             'title',
             "This affix must be present and be a greater affix"
         );
-    } else if (current_state === 'greater') {
+    }
+    // greater -> one-of
+    else if (current_state === 'greater') {
         element.data('current', 'one-of');
         element.html(affix_state['one-of']);
         element.attr(
@@ -709,8 +715,6 @@ function add_affix(
         affix_value = affix.data('value');
     }
 
-    console.log(affix_key);
-
     // Bail if affix already in list
     let current_affixes = build_affixes(element.parent());
     if (current_affixes.includes(affix_key)) {
@@ -729,14 +733,18 @@ function add_affix(
 
     // Set the affix key and value
     let affix_text = new_affix.find('p');
-    affix_text.data('key', affix_key);
     affix_text.text(affix_value);
+    new_affix.data('key', affix_key);
 
     // Abbreviate the affix if it's too long, or if it's on the list with shorter names
     let abbr = abbreviate_affix(affix_key);
     let no__affix_key = affix_key.replace(/_/g, ' ');
     if (abbr !== no__affix_key) {
-        affix_text.html('<abbr title="' + affix_value + '">' + abbr + '</abbr>');
+        affix_text.html(
+            '<abbr title="' + affix_value + '">'
+            + abbr
+            + '</abbr>'
+        );
     }
 
     // Add in the comparison and value, if they were passed
