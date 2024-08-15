@@ -16,6 +16,11 @@
       integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"
+      integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script>
 </head>
 <body>
 <h1 id="header">
@@ -154,7 +159,7 @@
     </div>
   </div>
   <div id="blank" style="display: none">
-    <div style="height: 1px"></div>
+    <div style="height: 1px" ignore></div>
   </div>
   <!--region Affix Template-->
   <!--todo: this should have a ! button to move it from a count
@@ -223,7 +228,7 @@
       <br>
       <button onclick="to_home()">Restart</button>
       <br>
-      <button onclick="to_home()">Save</button>
+      <button onclick="save_filter()">Save</button>
     </div>
 
     <div id="uniques" ignore>
@@ -243,6 +248,22 @@
 </div>
 
 <div id="footer">
+  <!--region Debugging YAML-->
+  <!--
+  <hr><br>
+  <div
+      style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows: 220px 1fr;">
+    <pre id="og-json"
+         style="text-align:left;max-height:200px"></pre>
+    <pre id="ns-json"
+         style="text-align:left;max-height:200px"></pre>
+    <pre id="og-yaml"
+         style="text-align:left;max-height:200px"></pre>
+    <pre id="ns-yaml"
+         style="text-align:left;max-height:200px"></pre>
+  </div>
+  -->
+  <!--endregion-->
   <hr>
   <small>
     Version <code class="version"></code>.
