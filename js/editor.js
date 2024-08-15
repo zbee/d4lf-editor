@@ -1,4 +1,5 @@
 // noinspection JSCheckFunctionSignatures
+
 // region Variables
 //region Selectors
 let start = $('#start'); // Splash page
@@ -802,7 +803,6 @@ function add_unique(filter_override = null) {
     close_button.show();
     close_button.insertBefore(new_unique.find('u'));
 
-    // todo: Add a move dropdown, to make the unique override a gear slot
     // Add a move button to the new unique from the template
     let move_button = move_template.clone();
     move_button.show();
@@ -973,9 +973,6 @@ function add_unique(filter_override = null) {
     new_unique.insertAfter('#uniques');
     new_unique.fadeIn(800);
 }
-
-// todo: move_unique(element) - element is the <select>. should use update_element()
-//  (element.parent().parent() is the span, 2 more is the unique div)
 
 // Move a unique to a gear slot, deleting the unique
 function move_unique(element) {
@@ -1320,8 +1317,6 @@ function search_filter_by(key = null, item_type = null, first_search = true) {
     return null;
 }
 
-// todo: update_element() - update the element with the filter object
-
 // Update an element with the given filter object
 function update_element(element, filter) {
     console.debug(element.find('u').text(), filter);
@@ -1422,8 +1417,6 @@ function update_element(element, filter) {
 ////////////////////////////////////////////////////////////////////////////////////
 //region Saving Utilities
 ////////////////////////////////////////////////////////////////////////////////////
-
-// todo: parse_element() - parse the element into a filter object
 
 // Parse an html element into a filter object
 function parse_element(element) {
