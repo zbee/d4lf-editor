@@ -1812,8 +1812,7 @@ function save_filter() {
         filters.push(filter);
     });
 
-    // Foreach filter in filters - if it's a unique, add it to the Uniques, else
-    // Affixes
+    // Check each filter: if it's a unique, add it to the Uniques, else Affixes
     for (let i = 0; i < filters.length; i++) {
         let unique = filters[i]['unique'] === true;
         let filter = convert_filter_part_for_yaml(filters[i]);
