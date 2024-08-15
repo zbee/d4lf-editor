@@ -77,6 +77,11 @@ const comparison = {
     'larger': symbols['more'],
     'smaller': symbols['less'],
 };
+const affix_states = {
+    'one-of': 'one-of',
+    'required': 'required',
+    'greater': 'greater',
+};
 const affix_state = {
     'one-of': symbols['one-of'],
     'required': symbols['required'],
