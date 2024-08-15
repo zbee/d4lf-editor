@@ -176,6 +176,23 @@ let filter_part_template = {
         'implicit': [],
     },
 };
+let mapping_template_body = {
+    "minPower": 9999,
+    "itemType": "elixir",
+    "affixPool": [
+        {
+            "count": [
+                {
+                    "name": "attack_speed",
+                    "comparison": "larger",
+                    "value": 999
+                },
+            ],
+            "minCount": 99,
+            "minGreaterAffixCount": 99
+        }
+    ]
+};
 let found_imported_comments = '';
 let file = null; // Uploaded file
 let file_name = ''; // Uploaded file name
@@ -997,6 +1014,35 @@ function move_unique(element) {
 //region Loading Utilities
 ////////////////////////////////////////////////////////////////////////////////////
 
+// todo: build_unique_slot_mapping()
+function build_unique_slot_mapping(filter) {
+    let mapping = [];
+
+    // Foreach filter in filter
+    for (let i = 0; i < filter.length; i++) {
+        let filter_item = filter[i];
+        let slot = filter_item['slot'];
+        let unique = filter_item['unique'];
+        let unique_aspect = filter_item['unique_aspect'];
+
+        // Skip if no unique
+        if (!unique) {
+            continue;
+        }
+        // Skip if slot is unique
+        if (slot === 'unique') {
+            continue;
+        }
+
+        // Add the unique to the mapping
+        mapping.push(
+            slot + mapping_key_separator + unique_aspect['name']
+        );
+    }
+
+    return mapping.join(mapping_separator);
+}
+
 // Check for an existing unique-to-slot mapping, and parse it if it exists
 function read_unique_slot_mapping(filter) {
     let uniques = filter['Uniques'];
@@ -1650,7 +1696,6 @@ reader.onload = readerEvent => {
         // Load the filter
         og_yaml = content;
         filter = jsyaml.load(content);
-        console.debug(filter);
 
         // Search for and save D4LF-import comments
         let original_lines = content.split('\n');
@@ -1821,6 +1866,17 @@ function save_filter() {
         } else {
             filter_for_yaml['Affixes'].push(filter);
         }
+    }
+
+    // Add unique-to-slot mapping
+    let unique_mapping = build_unique_slot_mapping(filters);
+    if (unique_mapping !== false) {
+        filter_for_yaml['Affixes'].push(
+            {
+                [mapping_label + mapping_label_separator + unique_mapping]:
+                mapping_template_body
+            }
+        );
     }
 
     // Write the filter to a js-yaml string
