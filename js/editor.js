@@ -159,6 +159,22 @@ $('.supported-d4lf').text(supported_d4lf);
 let editor_source = null;
 let editor_data = editor_layout; // Editor working data
 let filter = {}; // Loaded filter data
+let filter_part_template = {
+    'slot': '',
+    'item_type': null,
+    'unique': false,
+    'unique_aspect': null,
+    'minPower': 0,
+    'affixes': {
+        'required': [], // list of required_affix_base
+        'pool': {
+            'list': [], // list of affix_base
+            'greater_required': 0,
+            'total_required': 0,
+        },
+        'implicit': [],
+    },
+};
 let file = null; // Uploaded file
 let reader = new FileReader(); // File reader
 //endregion
@@ -1302,6 +1318,103 @@ function search_filter_by(key = null, item_type = null, first_search = true) {
 ////////////////////////////////////////////////////////////////////////////////////
 
 // todo: parse_element() - parse the element into a filter object
+
+// Parse an html element into a filter object
+function parse_element(element) {
+    let individual_filter = structuredClone(filter_part_template);
+    let affix_base = {
+        'name': '',
+        'comparison': 'larger',
+        'value': 0,
+    };
+    let required_affix_base = {
+        affix: {...affix_base},
+        'greater_required': false,
+    };
+
+    // Get the slot
+    individual_filter['slot'] = element.find('u').text();
+
+    // Get the item type
+    let item_type = element.find('.item-list')
+                           .children('option:selected').data('key');
+    if (item_type !== '') {
+        individual_filter['item_type'] = item_type;
+    }
+
+    // Get the unique
+    let unique = element.find('.unique-list')
+                        .children('option:selected').data('key');
+    individual_filter['unique'] = unique !== '';
+
+    // If a unique is selected build the unique aspect
+    if (individual_filter['unique'] !== false) {
+        let unique_aspect = {...affix_base};
+        unique_aspect['name'] = unique;
+
+        // Get the unique aspect
+        unique_aspect['comparison'] = element.find('.unique-roll .comparison')
+                                             .data('current');
+        unique_aspect['value'] = element.find('.unique-roll input').val();
+        individual_filter['unique_aspect'] = unique_aspect;
+    }
+
+    // Get the minimum power
+    individual_filter['minPower'] = element.find('[data-key="minPower"] input')
+                                           .val();
+
+    // Get the minimum greater affix count
+    individual_filter['affixes']['pool']['greater_required'] = element
+        .find('[data-key="minGreaterAffixCount"] input').val();
+
+    // Get the minimum affix count
+    individual_filter['affixes']['pool']['total_required'] = element
+        .find('[data-key="minCount"] input').val();
+
+    // Loop over each affix in the affix list
+    let affixes = element.find('.affixes').children();
+    $.each(affixes, function (index, affix) {
+        // Find the affix data
+        let affix_element = $(affix);
+        let affix_key = affix_element.data('key');
+        let affix_compare = affix_element.find('[data-key="affix-comparison"]').data(
+            'current');
+        let affix_value = affix_element.find('[data-key="affix-value"]').val();
+        let affix_state = affix_element.find('[data-key="affix-pooling"]').data(
+            'current');
+
+        // Build the affix object
+        let affix_object = {...affix_base};
+        affix_object['name'] = affix_key;
+        affix_object['comparison'] = affix_compare;
+        affix_object['value'] = affix_value;
+
+        // foreach key in implicit_affixes, if affix_key is in the list, add it to the implicit list
+
+        // Put the affix in the right list
+        // Implicit Pool
+        for (const [_, value] of Object.entries(implicit_affixes)) {
+            if (value.includes(affix_key)) {
+                individual_filter['affixes']['implicit'].push(affix_object);
+                return;
+            }
+        }
+        // Normal Pool
+        if (affix_state === affix_states['one-of']) {
+            individual_filter['affixes']['pool']['list'].push(affix_object);
+        }
+        // Required Pool
+        else {
+            let req_affix_object = {...required_affix_base};
+            req_affix_object['affix'] = affix_object;
+            req_affix_object['greater_required'] = affix_state === affix_states['greater'];
+
+            individual_filter['affixes']['required'].push(req_affix_object);
+        }
+    });
+
+    return individual_filter;
+}
 
 // endregion
 
