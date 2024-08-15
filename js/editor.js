@@ -857,6 +857,9 @@ function add_unique(filter_override = null) {
             if (Array.isArray(unique)) {
                 unique = unique[0];
             }
+            if (typeof unique === 'object') {
+                unique = unique['name'];
+            }
             // Set the unique
             new_unique
                 .find('.unique-list option[data-key="' + unique + '"]')
