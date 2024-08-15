@@ -1050,7 +1050,6 @@ function parse_weapons(unique_mapping) {
     }
     let found_weapon_types = [];
 
-    let number_weapons = 0;
     let number_1H_weapons = 0;
     let number_2H_weapons = 0;
     let number_off_hand_weapons = 0;
@@ -1308,6 +1307,99 @@ function search_filter_by(key = null, item_type = null, first_search = true) {
 }
 
 // todo: update_element() - update the element with the filter object
+
+// Update an element with the given filter object
+function update_element(element, filter) {
+    console.debug(element.find('u').text(), filter);
+    // Reset the element to the template
+    element.html(filter_template.html());
+
+    // Set the item type
+    let item_type = filter['item_type'];
+    if (item_type !== null) {
+        element.find('.item-list option[selected]')
+               .removeAttr('selected');
+        element.find('.item-list option[data-key="' + item_type + '"]')
+               .attr('selected', '');
+
+        // Hide the unique selection if an item type is selected
+        element.find('.unique-selection').hide();
+        element.find('.unique-roll').hide();
+    }
+
+    // Set the unique
+    let unique = filter['unique'];
+    let unique_aspect = filter['unique_aspect'];
+    if (unique !== false) {
+        element.find('.unique-list option[selected]')
+               .removeAttr('selected');
+        element.find('.unique-list option[data-key="' + unique_aspect['name'] + '"]')
+               .attr('selected', '');
+        element.find('.unique-selection').fadeIn("slow");
+
+        // Hide the item type selection if unique is selected
+        element.find('.select-item-type').hide();
+        // Show the unique roll if unique is selected
+        element.find('.unique-roll').fadeIn("slow");
+    }
+
+    // Set the unique aspect
+    if (unique !== false) {
+        element.find('.unique-roll input').val(unique_aspect['value']);
+        element.find('.unique-roll .comparison').html(
+            comparison[unique_aspect['comparison']]
+        );
+        element.find('.unique-roll .comparison').data(
+            'current',
+            unique_aspect['comparison']
+        );
+    }
+
+    // Set the minPower
+    element.find('[data-key="minPower"] input').val(filter['minPower']);
+
+    // Set the minimum greater affix count
+    element.find('[data-key="minGreaterAffixCount"] input').val(
+        filter['affixes']['pool']['greater_required']
+    );
+
+    // Set the minimum affix count
+    element.find('[data-key="minCount"] input').val(
+        filter['affixes']['pool']['total_required']
+    );
+
+    // Set the affixes
+    let affixes = filter['affixes']['pool']['list'];
+    for (let i = 0; i < affixes.length; i++) {
+        let affix = affixes[i];
+        add_affix(element, affix['name'], affix['comparison'], affix['value']);
+    }
+
+    // Set the required affixes
+    let required_affixes = filter['affixes']['required'];
+    for (let i = 0; i < required_affixes.length; i++) {
+        let affix = required_affixes[i];
+        add_affix(element, affix['affix']['name'], affix['affix']['comparison'],
+            affix['affix']['value']
+        );
+        let affix_element = element.find('.affixes').children().last();
+        let state_of_affix = affix['greater_required'] ? 'greater' : 'required';
+        affix_element.find('[data-key="affix-pooling"]').html(
+            affix_state[state_of_affix]
+        );
+        affix_element.find('[data-key="affix-pooling"]').data(
+            'current',
+            state_of_affix
+        );
+    }
+
+    // Set the implicit affixes
+    let implicit_affixes = filter['affixes']['implicit'];
+    for (let i = 0; i < implicit_affixes.length; i++) {
+        let affix = implicit_affixes[i];
+        add_affix(element, affix['name'], affix['comparison'], affix['value']);
+    }
+}
 
 // todo: change build_editor() and add_unique() to use update_element()
 
