@@ -91,14 +91,8 @@ const affix_state = {
 const new_filter = true;
 const existing_filter = false;
 const synonyms = {
-    'helm': 'head',
     'chest': 'chest armor',
-    'amulet': 'amulet',
-    'gloves': 'gloves',
-    'ring': 'ring',
-    'pants': 'pants',
     'other_ring': 'ring',
-    'boots': 'boots',
 };
 //endregion
 
