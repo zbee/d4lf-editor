@@ -1636,7 +1636,7 @@ function convert_affix_filter_part_for_yaml(filter_object) {
     filter_for_yaml[filter_object['slot']] = {
         'minPower': filter_object['minPower'],
         'itemType': filter_object['item_type'] !== null
-            ? filter_object['item_type']
+            ? filter_object['item_type'].toLowerCase()
             : get_synonym_if_has(filter_object['slot']),
     };
 
