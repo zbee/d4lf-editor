@@ -1614,7 +1614,7 @@ function convert_unique_filter_part_for_yaml(filter_object) {
     if (filter_object['affixes']['pool']['list'].length !== 0
         || filter_object['affixes']['required'].length !== 0
         || filter_object['affixes']['implicit'].length !== 0) {
-        filter_for_yaml['affixes'] = [];
+        filter_for_yaml['affix'] = [];
 
         // Implicit Affixes
         for (let i = 0; i < filter_object['affixes']['implicit'].length; i++) {
