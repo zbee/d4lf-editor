@@ -36,27 +36,27 @@ const editor_layout = [
     {slot: 'right_hand', filters: null,},
 ];
 const one_handed_weapons = [
-    'Axe',
-    'Dagger',
-    'Mace',
-    'Scythe',
-    'Sword',
-    'Wand',
+    'axe',
+    'dagger',
+    'mace',
+    'scythe',
+    'sword',
+    'wand',
 ];
 const off_hand_weapons = [
-    'Focus',
-    'Shield',
-    'Totem',
+    'focus',
+    'shield',
+    'totem',
 ];
 const two_handed_weapons = [
-    'Axe2H',
-    'Bow',
-    'Crossbow2H',
-    'Mace2H',
-    'Polearm',
-    'Scythe2H',
-    'Staff',
-    'Sword2H',
+    'axe2H',
+    'bow',
+    'crossbow2H',
+    'mace2H',
+    'polearm',
+    'scythe2H',
+    'staff',
+    'sword2H',
 ];
 const implicit_affixes = {
     'boots': [
@@ -367,15 +367,17 @@ function build_editor() {
                 if (Array.isArray(item_type)) {
                     item_type = item_type[0];
                 }
+                console.debug(item_type);
                 // Set the item type
                 new_filter
-                    .find('.item-list option[data-key="' + item_type + '"]')
+                    .find('.item-list option[data-key="' + capitalize(item_type) + '"]')
                     .attr('selected', '');
                 // Unselect the default option
                 new_filter.find('.item-list option').first().removeAttr('selected');
                 if (layout_item.slot.includes('hand')) {
                     // Hide unique selection if item type is selected
                     new_filter.find('.unique-selection').hide();
+                    new_filter.find('.select-item-type').fadeIn("slow");
                 }
             }
 
@@ -1124,7 +1126,7 @@ function parse_weapons(unique_mapping) {
     for (let i = 0; i < filter['Affixes'].length; i++) {
         let filter_item = filter['Affixes'][i];
         let name = Object.keys(filter_item)[0];
-        let item_type = filter_item[name]['itemType'];
+        let item_type = filter_item[name]['itemType'].toLowerCase();
 
         // Don't support multiple item types in a single filter
         // Make item_type the first type if it's an array of types
@@ -1265,7 +1267,7 @@ function parse_weapons(unique_mapping) {
     //endregion
 
     // Return weapons object
-    //console.debug(weapons);
+    console.debug(weapons);
     return weapons;
 }
 
@@ -1315,7 +1317,7 @@ function search_filter_by(key = null, item_type = null, first_search = true) {
     }
 
     // Simplify queries
-    key = query_cleaner(key);
+    let compare_key = query_cleaner(key);
     item_type = query_cleaner(item_type);
 
     //region Key Searching
@@ -1326,8 +1328,8 @@ function search_filter_by(key = null, item_type = null, first_search = true) {
             // use query_cleaner on all keys
             let filter_key = query_cleaner(Object.keys(filter_item)[0]);
 
-            if (filter_key === key) {
-                //console.debug('search result (A): ', filter_item[key]);
+            if (filter_key === compare_key) {
+                //console.debug('search result (A): ', filter_item[key], key);
                 return filter_item[key];
             }
         }
@@ -1336,19 +1338,19 @@ function search_filter_by(key = null, item_type = null, first_search = true) {
         for (let i = 0; i < filter['Uniques'].length; i++) {
             let filter_item = filter['Uniques'][i];
             if (Array.isArray(filter_item['aspect'])) {
-                if (query_cleaner(filter_item['aspect'][0]) === key) {
+                if (query_cleaner(filter_item['aspect'][0]) === compare_key) {
                     //console.debug('search result ([U]): ', filter_item);
                     return filter_item;
                 }
             }
             else if (typeof input === 'object') {
-                if (query_cleaner(filter_item['aspect']['name']) === key) {
+                if (query_cleaner(filter_item['aspect']['name']) === compare_key) {
                     //console.debug('search result ([U]): ', filter_item);
                     return filter_item;
                 }
             }
             else {
-                if (query_cleaner(filter_item['aspect']) === key) {
+                if (query_cleaner(filter_item['aspect']) === compare_key) {
                     //console.debug('search result (U): ', filter_item);
                     return filter_item;
                 }
@@ -1751,6 +1753,7 @@ function parse_filter() {
     // Parse weapon slots
     let weapons = parse_weapons(unique_mapping);
 
+    console.debug(weapons);
     // Foreach over each slot in the editor layout
     for (let i = 0; i < editor_layout.length; i++) {
         let layout_item = editor_layout[i];
