@@ -1612,17 +1612,20 @@ function convert_unique_filter_part_for_yaml(filter_object) {
         // Implicit Affixes
         for (let i = 0; i < filter_object['affixes']['implicit'].length; i++) {
             let affix = filter_object['affixes']['implicit'][i];
-            filter_for_yaml['affixes'].push(affix);
+            filter_for_yaml['affix'].push(affix);
         }
         // Required Affixes
         for (let i = 0; i < filter_object['affixes']['required'].length; i++) {
             let affix = filter_object['affixes']['required'][i];
-            filter_for_yaml['affixes'].push(affix);
+            if (affix['greater_required']) {
+                filter_for_yaml['minGreaterAffixCount']++;
+            }
+            filter_for_yaml['affix'].push(affix['affix']);
         }
         // Normal Affixes
         for (let i = 0; i < filter_object['affixes']['pool']['list'].length; i++) {
             let affix = filter_object['affixes']['pool']['list'][i];
-            filter_for_yaml['affixes'].push(affix);
+            filter_for_yaml['affix'].push(affix);
         }
     }
     // endregion
