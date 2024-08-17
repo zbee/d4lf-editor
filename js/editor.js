@@ -1387,8 +1387,15 @@ function search_filter_by(key = null, item_type = null, first_search = true) {
 // Update an element with the given filter object
 function update_element(element, filter) {
     console.debug(element.find('u').text(), filter);
+
+    // Save the slot name
+    let slot = element.find('u').text();
+
     // Reset the element to the template
     element.html(filter_template.html());
+
+    // Set the slot name
+    element.find('u').text(slot);
 
     // Set the item type
     let item_type = filter['item_type'];
