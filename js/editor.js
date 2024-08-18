@@ -1132,13 +1132,14 @@ function parse_weapons(unique_mapping) {
     for (let i = 0; i < filter['Affixes'].length; i++) {
         let filter_item = filter['Affixes'][i];
         let name = Object.keys(filter_item)[0];
-        let item_type = filter_item[name]['itemType'].toLowerCase();
+        let item_type = filter_item[name]['itemType'];
 
         // Don't support multiple item types in a single filter
         // Make item_type the first type if it's an array of types
         if (Array.isArray(item_type)) {
             item_type = item_type[0];
         }
+        item_type = item_type.toLowerCase();
 
         // Record the weapon type
         if (one_handed_weapons.includes(item_type)) {
