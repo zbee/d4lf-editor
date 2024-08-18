@@ -1048,8 +1048,13 @@ function build_unique_slot_mapping(filter) {
 
 // Check for an existing unique-to-slot mapping, and parse it if it exists
 function read_unique_slot_mapping(filter) {
-    let uniques = filter['Uniques'];
     let affixes = filter['Affixes'];
+
+    // Check if there are uniques
+    if (!filter.hasOwnProperty('Uniques')) {
+        return false;
+    }
+    let uniques = filter['Uniques'];
 
     // Build simple list of aspect names of uniques
     let unique_aspects = [];
