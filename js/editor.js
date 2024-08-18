@@ -1805,6 +1805,11 @@ function parse_filter() {
         layout_item['filters'] = search_filter_by(null, slot);
     }
 
+    // Check if there are uniques, if not: return early
+    if (!filter.hasOwnProperty('Uniques')) {
+        return filled_data;
+    }
+
     // Add the unslotted uniques to the end of the editor layout
     // If all uniques are unslotted, add them all
     if (all_uniques_unslotted) {
