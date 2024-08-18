@@ -1879,20 +1879,20 @@ function save_filter() {
             && filter['affixes']['implicit'].length === 0;
         let emptyEmpty = filter['item_type'] === null
             && filter['unique'] === false
-            && filter['minPower'] === '0'
+            && filter['minPower'] === 0
             && emptyAffixes;
         let emptyWeapon = filter['slot'].includes('hand')
             && filter['item_type'] === null
             && filter['unique'] === false;
         let emptyUnique = filter['slot'] === 'unique'
             && filter['unique'] === false
-            && filter['unique_aspect']['value'] === '0'
-            && filter['minPower'] === '0'
+            && filter['unique_aspect']['value'] === 0
+            && filter['minPower'] === 0
             && emptyAffixes;
         let emptyGear = filter['slot'] !== 'unique'
             && filter['item_type'] === null
             && filter['unique'] === false
-            && filter['minPower'] === '0'
+            && filter['minPower'] === 0
             && emptyAffixes;
         if (emptyEmpty || emptyWeapon || emptyUnique || emptyGear) {
             return;
