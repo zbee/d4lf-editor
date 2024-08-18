@@ -1658,6 +1658,11 @@ function convert_affix_filter_part_for_yaml(filter_object) {
             : get_synonym_if_has(filter_object['slot']),
     };
 
+    // Fix other_ring item type
+    if (filter_for_yaml[filter_object['slot']]['itemType'] === 'other_ring') {
+        filter_for_yaml[filter_object['slot']]['itemType'] = 'ring';
+    }
+
     //region Affixes
     // Implicit Affixes
     if (filter_object['affixes']['implicit'].length !== 0) {
