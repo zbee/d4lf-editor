@@ -368,7 +368,6 @@ function build_editor() {
                 if (Array.isArray(item_type)) {
                     item_type = item_type[0];
                 }
-                console.debug(item_type);
                 // Set the item type
                 new_filter
                     .find('.item-list option[data-key="' + capitalize(item_type) + '"]')
@@ -1274,7 +1273,7 @@ function parse_weapons(unique_mapping) {
     //endregion
 
     // Return weapons object
-    console.debug(weapons);
+    //console.debug(weapons);
     return weapons;
 }
 
@@ -1325,7 +1324,7 @@ function search_filter_by(key = null, item_type = null, first_search = true) {
 
     // Simplify queries
     let compare_key = query_cleaner(key);
-    item_type = query_cleaner(item_type);
+    let compare_item_type = query_cleaner(item_type);
 
     //region Key Searching
     if (key !== null) {
@@ -1372,7 +1371,7 @@ function search_filter_by(key = null, item_type = null, first_search = true) {
             let filter_item = filter['Affixes'][i];
             filter_item = filter_item[Object.keys(filter_item)[0]];
             let filter_item_type = query_cleaner(filter_item['itemType']);
-            if (filter_item_type === item_type) {
+            if (filter_item_type === compare_item_type) {
                 //console.debug('search result (I): ', filter_item);
                 return filter_item;
             }
@@ -1760,7 +1759,7 @@ function parse_filter() {
     // Parse weapon slots
     let weapons = parse_weapons(unique_mapping);
 
-    console.debug(weapons);
+    //console.debug(weapons);
     // Foreach over each slot in the editor layout
     for (let i = 0; i < editor_layout.length; i++) {
         let layout_item = editor_layout[i];
