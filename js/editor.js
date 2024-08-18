@@ -93,6 +93,7 @@ const existing_filter = false;
 const synonyms = {
     'chest': 'chest armor',
     'other_ring': 'ring',
+    'ring2': 'ring',
 };
 //endregion
 
