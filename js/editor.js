@@ -441,10 +441,23 @@ function build_editor() {
             }
 
             // Fill minCount
+            // From root
             if (layout_item.filters.hasOwnProperty('minCount')) {
                 new_filter
                     .find('[data-key="minCount"] input')
                     .val(layout_item.filters['minCount']);
+            }
+            // From affixPool
+            if (layout_item.filters.hasOwnProperty('affixPool')) {
+                // For each count in the affixPool
+                for (let i = 0; i < layout_item.filters['affixPool'].length; i++) {
+                    let count = layout_item.filters['affixPool'][i];
+                    if (count.hasOwnProperty('minCount')) {
+                        new_filter
+                            .find('[data-key="minCount"] input')
+                            .val(count['minCount']);
+                    }
+                }
             }
 
             // todo: this should be a loop over `layout_item.filters['affixPool']`,
