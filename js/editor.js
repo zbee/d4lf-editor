@@ -57,6 +57,8 @@ const two_handed_weapons = [
     'scythe2H',
     'staff',
     'sword2H',
+    'glaive',
+    'quarterstaff',
 ];
 const implicit_affixes = {
     'boots': [
@@ -233,6 +235,8 @@ $.getJSON(
                 || key_check.includes('staff')
                 || key_check.includes('sword')
                 || key_check.includes('wand')
+                || key_check.includes('quarterstaff')
+                || key_check.includes('glaive')
             ) {
                 $('.item-list').append(
                     '<option data-key="' + key + '" data-value="' + value + '">' +
