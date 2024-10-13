@@ -1696,15 +1696,17 @@ function convert_affix_filter_part_for_yaml(filter_object) {
 
     // Normal Affixes
     if (filter_object['affixes']['pool']['list'].length !== 0) {
-        filter_for_yaml[filter_object['slot']]['affixPool'].push({
+        let affixPool = {
             'count': filter_object['affixes']['pool']['list'],
             'minGreaterAffixCount': filter_object['affixes']['pool']['greater_required'],
-        });
+        }
+
         // Only add minCount if it's not 0
         if (filter_object['affixes']['pool']['total_required'] !== 0) {
-            filter_for_yaml[filter_object['slot']]['affixPool']['minCount'] =
-                filter_object['affixes']['pool']['total_required'];
+            affixPool['minCount'] = filter_object['affixes']['pool']['total_required'];
         }
+
+        filter_for_yaml[filter_object['slot']]['affixPool'].push(affixPool);
     }
 
     // Required Affixes
