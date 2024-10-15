@@ -381,6 +381,9 @@ function build_editor() {
                 if (layout_item.slot.includes('hand')) {
                     // Hide unique selection if item type is selected
                     new_filter.find('.unique-selection').hide();
+                    // Show the minCount if item type is selected
+                    new_filter.find('[data-key="minCount"]').fadeIn("slow");
+                    // Show the item type selection if item type is selected
                     new_filter.find('.select-item-type').fadeIn("slow");
                 }
             }
@@ -406,6 +409,8 @@ function build_editor() {
                 new_filter.find('.unique-roll').show();
                 // Hide the item type selection if unique is selected
                 new_filter.find('.select-item-type').hide();
+                // Hide the minCount if unique is selected
+                new_filter.find('[data-key="minCount"]').hide();
             }
 
             // Fill the Unique aspect roll
@@ -717,21 +722,36 @@ function change_affix_state(element) {
 // Show both Item-Type and Unique selectors without values, with values: only
 // show one or the other
 function toggle_unique_or_item(element) {
+    // The value of the selected option
     let value = element.children('option:selected').val();
+
+    // The filter we're in
+    let parent_filter = element.parent().parent();
+    // The name of the filter slot we're in
+    let slot = parent_filter.attr('id');
+
+    // The selectors for what we show/hide
+    let unique = parent_filter.find('.unique-selection');
+    let item_type = parent_filter.find('.select-item-type');
+    let minCount = parent_filter.find('[data-key="minCount"]');
 
     // Show both
     if (value === '') {
-        $('.select-item-type').fadeIn("slow");
-        $('.unique-selection').fadeIn("slow");
+        if (slot.includes('hand')) {
+            item_type.fadeIn("slow");
+        }
+        unique.fadeIn("slow");
+        minCount.fadeIn("slow");
     }
     // Hide the other
     else {
         let parent_class = element.parent().attr('class');
 
         if (parent_class === 'select-item-type') {
-            element.parent().parent().find('.unique-selection').hide();
+            unique.hide();
         } else {
-            element.parent().parent().find('.select-item-type').hide();
+            item_type.hide();
+            minCount.hide();
         }
     }
 }
