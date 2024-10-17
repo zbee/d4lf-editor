@@ -868,6 +868,7 @@ function add_unique(filter_override = null) {
     new_unique.find('u').text('Unique');
     new_unique.find('.select-item-type').hide();
     new_unique.find('.unique-roll').show();
+    new_unique.find('[data-key="minCount"]').hide();
     new_unique.show();
     new_unique.fadeOut(0);
     // Remove the empty unique option
