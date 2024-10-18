@@ -43,9 +43,6 @@ that goes over exactly how to use the editor.
 
 ## Updating
 
-This sees a lot of use in my friend group, so as long as any of us are playing it 
-will be up to date with the latest D4LF features.
-
 For small version changes, I just update the variable to the latest version, and 
 make sure that `json/` files are updated.<br>
 For larger changes (which typically mirror larger changes in Diablo, so I 
