@@ -61,3 +61,5 @@ Uses:
 - [js-yaml](https://github.com/nodeca/js-yaml)
 - [jquery](https://jquery.com/)
 - [FileSaver.js](https://github.com/eligrey/FileSaver.js)
+- [normalize.css](https://github.com/necolas/normalize.css)
+- [sakura](https://github.com/oxalorg/sakura)
