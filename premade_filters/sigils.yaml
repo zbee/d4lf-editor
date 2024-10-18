@@ -1,0 +1,79 @@
+# Based off of the now-deleted Maxroll Sigil tier lists for Glyph and XP
+# It is only S and A tier areas excluded from the filter
+
+Sigils:
+  # None of this is very applicable anymore (probably), but these 2 definitely aren't:
+  #minTier: 70
+  #maxTier: 100
+
+  blacklist:
+    # Affixes
+    # Worst of the worst
+    - drifting_shade
+    - empowered_elites_suppressor
+    - death_pulse
+    - volcanic
+
+    - monster_vulnerable_resist
+
+    - resistance_breakers
+    - potion_breakers
+    - armor_breakers
+
+    # Impossible to Party
+    - blood_blister
+    - stormbanes_wrath
+    - lightning_storm
+
+    # No Thanks
+    - resource_burn
+    - ranged_defenders
+    - slowing_projectiles
+
+    - melee_defenders
+    - nightmare_portal
+    - monster_barrier
+    - monster_crowd_control_resist
+
+    # # # # # # # # # # # # # # # # # #
+
+    # Location
+    # Awful Places
+    - serpents_lair
+    - charnel_house
+
+    # B-Tier Solo XP
+    - komdor_temple
+    - charnel_house
+    - collapsed_vault
+    - yshari_sanctum
+    - howling_warren
+    # B-Tier Solo Glyph
+    - komdor_temple
+    - yshari_sanctum
+    - charnel_house
+    - lights_refuge
+    - path_of_the_blind
+
+    # C-Tier Solo Glyph
+    - renegades_retreat
+    - grinning_labyrinth
+    - lubans_rest
+    - endless_gates
+    - fetid_mausoleum
+    - conclave
+    - broken_bulwark
+    # C-Tier Solo XP
+    - crusaders_cathedral
+    - leviathans_maw
+    - inferno
+    - lubans_rest
+    - endless_gates
+    - sepulcher_of_the_forsworn
+
+    # D-Tier Solo Glyph
+    - bloodsoaked_crag
+    - forbidden_city
+    # D-Tier Solo XP
+    - heathens_keep
+    - tormented_ruins

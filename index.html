@@ -41,17 +41,19 @@
     </p>
   </div>
 
-  <div id="start-buttons">
+  <div class="buttons">
     <a onclick="to_editor(new_filter)">
       New Filter
     </a>
     <a onclick="to_editor(existing_filter)">
       Open Existing Filter
     </a>
-    <a href="guide.html">
+    <a href="guide.html"
+       class="smaller">
       Usage Guide
     </a>
     <a href="https://github.com/aeon0/d4lf?tab=readme-ov-file#gui"
+       class="smaller"
        target="_blank">
       How to Import a Build
     </a>
@@ -63,10 +65,20 @@
       <br>
       <small style="font-size: 65%;">
         Only <code>Uniques</code> and <code>Affixes</code>
-        sections are supported, with 1 item type per filter, and 1 type of item
-        per game slot.
+        sections are supported, with 1 item type per filter, and 1 filter per gear
+        slot.
       </small>
     </p>
+  </div>
+
+  <h4>Pre-Made Filters</h4>
+  <div class="buttons muted">
+    <a href="/premade_filters/sigils.yaml" class="smaller">
+      Maxroll Top Sigils Filter
+    </a>
+    <a href="/premade_filters/3greater.yaml" class="smaller">
+      3 or more Greater Filter
+    </a>
   </div>
 </div>
 <div id="editor" style="display:none">

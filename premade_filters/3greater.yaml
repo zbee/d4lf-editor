@@ -1,0 +1,5 @@
+# Matches any 751+ power item (ancestrals), with at least 3 greater affixes
+Affixes:
+  - great:
+      minPower: 751
+      minGreaterAffixCount: 3
