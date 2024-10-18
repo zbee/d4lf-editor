@@ -8,8 +8,7 @@ set of filters for a build, letting you evolve it as you get gear.
 
 ### Features
 
-<img src="img/unique_example.jpg" width="49%" />
-<img src="img/non-unique_example.jpg" width="49%" />
+<img src="img/unique_example.jpg" width="41%" /> <img src="img/non-unique_example.jpg" width="40.9%" />
 
 - Support for Unique or Legendary items
 - Unique Aspect filtering
