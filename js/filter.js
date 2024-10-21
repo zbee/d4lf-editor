@@ -293,7 +293,13 @@ class affixes {
  */
 class affix {
     /**
-     * The name of the affix.
+     * The real name of the affix.
+     * @type {string|null}
+     */
+    key = null;
+
+    /**
+     * The human-readable name of the affix.
      * @type {string|null}
      */
     name = null;
@@ -347,7 +353,8 @@ class affix {
 
         // Error if any values are still null.
         if (
-            this.name === null
+            this.key === null
+            || this.name === null
             || this.comparison === null
             || this.value === null
             || this.requirement === null) {
@@ -376,8 +383,9 @@ class affix {
             .find('select')
             .children('option:selected')
 
-        this.name = selected_affix.data('key');
-        this.value = +selected_affix.data('value');
+        this.key = selected_affix.data('key');
+        this.name = selected_affix.data('value');
+        this.value = 0; // default
         this.comparison = COMPARISON_TYPES.LARGER; // default
         this.requirement = REQUIREMENT_TYPES.ONE_OF; // default
     }
@@ -401,7 +409,8 @@ class affix {
             throw ERRORS.AFFIX.NO_JQUERY;
         }
 
-        this.name = $html.data('key');
+        this.key = $html.data('key');
+        this.name = $html.find('p').text();
         // noinspection JSCheckFunctionSignatures
         this.value = +$html
             .find('[data-key="affix-value"]')
