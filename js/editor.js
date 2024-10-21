@@ -426,8 +426,8 @@ function build_editor() {
                     }
                     new_filter.find('.unique-roll input').val(value);
                     new_filter.find('.unique-roll .comparison').html(compare[1]);
-                    new_filter.find('.unique-roll .comparison').data(
-                        'current',
+                    new_filter.find('.unique-roll .comparison').attr(
+                        'data-current',
                         compare[0]
                     );
                 }
@@ -676,10 +676,10 @@ function build_affixes(element) {
 function change_comparison(element) {
     let current_comparison = element.data('current');
     if (current_comparison === 'larger') {
-        element.data('current', 'smaller');
+        element.attr('data-current', 'smaller');
         element.html(comparison['smaller']);
     } else {
-        element.data('current', 'larger');
+        element.attr('data-current', 'larger');
         element.html(comparison['larger']);
     }
 }
@@ -690,7 +690,7 @@ function change_affix_state(element) {
     let current_state = element.data('current');
     // one-of -> required
     if (current_state === 'one-of') {
-        element.data('current', 'required');
+        element.attr('data-current', 'required');
         element.html(affix_state['required']);
         element.attr(
             'title',
@@ -699,7 +699,7 @@ function change_affix_state(element) {
     }
     // required -> greater
     else if (current_state === 'required') {
-        element.data('current', 'greater');
+        element.attr('data-current', 'greater');
         element.html(affix_state['greater']);
         element.attr(
             'title',
@@ -708,7 +708,7 @@ function change_affix_state(element) {
     }
     // greater -> one-of
     else if (current_state === 'greater') {
-        element.data('current', 'one-of');
+        element.attr('data-current', 'one-of');
         element.html(affix_state['one-of']);
         element.attr(
             'title',
@@ -783,8 +783,7 @@ function add_affix(
         // From the gear slot element
         element = element.find('.affix-list').parent();
         let affixes = element.find('select');
-        affix_value = affixes.find('option[data-key="' + affix_key + '"]').data(
-            'value');
+        affix_value = affixes.find('option[data-key="' + affix_key + '"]').data('value');
     } else {
         // From the button
         let affix = element.find('select').children('option:selected');
@@ -812,7 +811,7 @@ function add_affix(
     let affix_text = new_affix.find('p');
     affix_text.text(affix_value);
     new_affix.removeAttr('id');
-    new_affix.data('key', affix_key);
+    new_affix.attr('data-key', affix_key);
 
     // Abbreviate the affix if it's too long, or if it's on the list with shorter names
     let abbr = abbreviate_affix(affix_key);
@@ -829,7 +828,7 @@ function add_affix(
     if (affix_compare !== null) {
         let compare = new_affix.find('.comparison');
         compare.html(comparison[affix_compare]);
-        compare.data('current', affix_compare);
+        compare.attr('data-current', affix_compare);
     }
     if (affix_compare_value !== null) {
         new_affix.find('input').val(affix_compare_value);
@@ -922,8 +921,8 @@ function add_unique(filter_override = null) {
                 }
                 new_unique.find('.unique-roll input').val(value);
                 new_unique.find('.unique-roll .comparison').html(compare[1]);
-                new_unique.find('.unique-roll .comparison').data(
-                    'current',
+                new_unique.find('.unique-roll .comparison').attr(
+                    'data-current',
                     compare[0]
                 );
             }
@@ -1478,8 +1477,8 @@ function update_element(element, filter) {
         element.find('.unique-roll .comparison').html(
             comparison[unique_aspect['comparison']]
         );
-        element.find('.unique-roll .comparison').data(
-            'current',
+        element.find('.unique-roll .comparison').attr(
+            'data-current',
             unique_aspect['comparison']
         );
     }
@@ -1516,8 +1515,8 @@ function update_element(element, filter) {
         affix_element.find('[data-key="affix-pooling"]').html(
             affix_state[state_of_affix]
         );
-        affix_element.find('[data-key="affix-pooling"]').data(
-            'current',
+        affix_element.find('[data-key="affix-pooling"]').attr(
+            'data-current',
             state_of_affix
         );
     }
