@@ -1,5 +1,7 @@
 // noinspection JSCheckFunctionSignatures
 
+// todo: move to classes in filter.js
+
 // region Variables
 //region Selectors
 let start = $('#start'); // Splash page
