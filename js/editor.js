@@ -811,6 +811,7 @@ function add_affix(
     // Set the affix key and value
     let affix_text = new_affix.find('p');
     affix_text.text(affix_value);
+    new_affix.removeAttr('id');
     new_affix.data('key', affix_key);
 
     // Abbreviate the affix if it's too long, or if it's on the list with shorter names
