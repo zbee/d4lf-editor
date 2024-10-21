@@ -458,16 +458,26 @@ class affix {
     /**
      * Toggles the requirement between not-required, required, and required greater.
      * @param {JQuery<HTMLElement>} $html - The HTML requirement button element.
+     * @param {string|null} [specific_requirement=null]
+     * The specific requirement to switch to.
      * @throws {ERRORS.AFFIX.BAD_KEYS}
      * @remarks A loop in the order of: one-of -> required -> greater
      * @see REQUIREMENT_TYPES
      * @static
      */
-    static toggle_requirement($html) {
+    static toggle_requirement($html, specific_requirement = null) {
         let current_requirement = $html.data('current');
 
+        let bad_keys = false;
+        if (current_requirement !== REQUIREMENT_TYPES.ONE_OF
+            && current_requirement !== REQUIREMENT_TYPES.REQUIRED
+            && current_requirement !== REQUIREMENT_TYPES.GREATER) {
+            bad_keys = true;
+        }
+
         // one-of -> required
-        if (current_requirement === REQUIREMENT_TYPES.ONE_OF) {
+        if (current_requirement === REQUIREMENT_TYPES.ONE_OF
+            || specific_requirement === REQUIREMENT_TYPES.REQUIRED) {
             $html
                 .html(SYMBOLS.REQUIREMENT.REQUIRED)
                 .attr('data-current', REQUIREMENT_TYPES.REQUIRED)
@@ -475,26 +485,27 @@ class affix {
                 .attr('title', REQUIREMENT_EXPLANATIONS.REQUIRED);
         }
         // required -> greater
-        else if (current_requirement === REQUIREMENT_TYPES.REQUIRED) {
+        else if (current_requirement === REQUIREMENT_TYPES.REQUIRED
+            || specific_requirement === REQUIREMENT_TYPES.GREATER) {
             $html
                 .html(SYMBOLS.REQUIREMENT.GREATER)
                 .attr('data-current', REQUIREMENT_TYPES.GREATER)
                 .data('current', REQUIREMENT_TYPES.GREATER)
                 .attr('title', REQUIREMENT_EXPLANATIONS.GREATER);
         }
-        // greater -> one-of
-        else {
+        // greater -> one-of (and catch-all)
+        else if (current_requirement === REQUIREMENT_TYPES.GREATER
+            || specific_requirement === REQUIREMENT_TYPES.ONE_OF
+            || bad_keys) {
             $html
                 .html(SYMBOLS.REQUIREMENT.ONE_OF)
                 .attr('data-current', REQUIREMENT_TYPES.ONE_OF)
                 .data('current', REQUIREMENT_TYPES.ONE_OF)
                 .attr('title', REQUIREMENT_EXPLANATIONS.ONE_OF);
+        }
 
-            // We use else to catch any other options than what are expected, but
-            // still want to report when it is an unexpected value
-            if (current_requirement !== REQUIREMENT_TYPES.GREATER) {
-                throw ERRORS.AFFIX.BAD_KEYS;
-            }
+        if (bad_keys) {
+            throw ERRORS.AFFIX.BAD_KEYS;
         }
     }
 
