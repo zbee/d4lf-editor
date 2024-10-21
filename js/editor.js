@@ -4,11 +4,6 @@
 //region Selectors
 let start = $('#start'); // Splash page
 let editor = $('#editor'); // Editor page
-let filter_template = $('#base-filter > div');
-let affix_template = $('#base-affix');
-let close_template = $('#base-unique-close');
-let move_template = $('#base-unique-move');
-let blank_filter = $('#blank div');
 let input = document.createElement('input');
 //endregion
 
@@ -1059,7 +1054,6 @@ function move_unique(element) {
 //region Loading Utilities
 ////////////////////////////////////////////////////////////////////////////////////
 
-// todo: build_unique_slot_mapping()
 function build_unique_slot_mapping(filter) {
     let mapping = [];
 
