@@ -335,7 +335,11 @@ class affix {
      * If created from {@link $input}, the affix's {@link affix#html|element} will also be
      * added to the HTML.
      */
-    constructor($input = null, yaml = null, $html = null) {
+    constructor(
+        $input = null,
+        yaml = null,
+        $html = null
+    ) {
         // Parse the affix from User Input, YAML, or HTML.
         if ($input !== null) {
             this.#from_user_addition($input);
@@ -362,9 +366,12 @@ class affix {
         }
 
         // Add the affix to the HTML if made from user input.
+        // todo: check !affixes($input).has_affix(this.key) before adding
         if ($input !== null) {
+            let new_element = this.html();
             // noinspection JSCheckFunctionSignatures
-            $input.parent().find('.affixes').append(this.html());
+            $input.parent().find('.affixes').append(new_element);
+            new_element.fadeIn('slow');
         }
     }
 
@@ -520,9 +527,43 @@ class affix {
     /**
      * Converts the affix to HTML.
      * @returns {JQuery<HTMLElement>} The HTML representation of the affix.
+     * @remarks
+     * {@link JQuery#fadeIn|fadeIn("slow")} should be used if page already drawn.
      */
     html() {
+        let new_affix_element = affix_template.clone();
 
+        // Clean up the template
+        new_affix_element
+            .removeAttr('id')
+            .show().fadeOut(0); // Set it be hidden "correctly"
+
+        // Set the key and name
+        // noinspection JSCheckFunctionSignatures
+        new_affix_element
+            .data('key', this.key)
+            .attr('data-key', this.key)
+            .find('[data-key="affix-key"]');
+        new_affix_element.find('p').text(this.name);
+
+        // Set the comparison if not default
+        if (this.comparison !== COMPARISON_TYPES.LARGER) {
+            // noinspection JSCheckFunctionSignatures
+            affix.toggle_comparison(
+                new_affix_element.find('[data-key="affix-comparison"]')
+            );
+        }
+
+        // Set the requirement if not default
+        if (this.requirement === REQUIREMENT_TYPES.ONE_OF) {
+            // noinspection JSCheckFunctionSignatures
+            affix.toggle_requirement(
+                new_affix_element.find('[data-key="affix-pooling"]'),
+                this.requirement
+            );
+        }
+
+        return new_affix_element;
     }
 
     /**
