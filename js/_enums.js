@@ -23,6 +23,12 @@ const REQUIREMENT_TYPES = Object.freeze({
     GREATER: 'greater',
 });
 
+const REQUIREMENT_EXPLANATIONS = Object.freeze({
+    ONE_OF: 'This affix is optional, according to the Minimum Affixes count',
+    REQUIRED: 'This affix must be present',
+    GREATER: 'This affix must be present and be a greater affix',
+});
+
 const SYMBOLS = Object.freeze({
     COMPARISON: {
         LARGER: '❯', // &#10095;

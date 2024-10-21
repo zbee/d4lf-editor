@@ -463,7 +463,7 @@ class affix {
                 .html(SYMBOLS.REQUIREMENT.REQUIRED)
                 .attr('data-current', REQUIREMENT_TYPES.REQUIRED)
                 .data('current', REQUIREMENT_TYPES.REQUIRED)
-                .attr('title', "This affix must be present");
+                .attr('title', REQUIREMENT_EXPLANATIONS.REQUIRED);
         }
         // required -> greater
         else if (current_requirement === REQUIREMENT_TYPES.REQUIRED) {
@@ -471,7 +471,7 @@ class affix {
                 .html(SYMBOLS.REQUIREMENT.GREATER)
                 .attr('data-current', REQUIREMENT_TYPES.GREATER)
                 .data('current', REQUIREMENT_TYPES.GREATER)
-                .attr('title', "This affix must be present and be a greater affix");
+                .attr('title', REQUIREMENT_EXPLANATIONS.GREATER);
         }
         // greater -> one-of
         else {
@@ -479,7 +479,7 @@ class affix {
                 .html(SYMBOLS.REQUIREMENT.ONE_OF)
                 .attr('data-current', REQUIREMENT_TYPES.ONE_OF)
                 .data('current', REQUIREMENT_TYPES.ONE_OF)
-                .attr('title', "This affix is optional");
+                .attr('title', REQUIREMENT_EXPLANATIONS.ONE_OF);
 
             // We use else to catch any other options than what are expected, but
             // still want to report when it is an unexpected value
