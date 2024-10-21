@@ -425,11 +425,10 @@ function build_editor() {
                         compare = [roll[2], comparison[roll[2]]];
                     }
                     new_filter.find('.unique-roll input').val(value);
-                    new_filter.find('.unique-roll .comparison').html(compare[1]);
-                    new_filter.find('.unique-roll .comparison').attr(
-                        'data-current',
-                        compare[0]
-                    );
+                    new_filter.find('.unique-roll .comparison')
+                        .html(compare[1])
+                        .attr('data-current', compare[0])
+                        .data('current', compare[0]);
                 }
             }
 
@@ -676,11 +675,15 @@ function build_affixes(element) {
 function change_comparison(element) {
     let current_comparison = element.data('current');
     if (current_comparison === 'larger') {
-        element.attr('data-current', 'smaller');
-        element.html(comparison['smaller']);
+        element
+            .html(comparison['smaller'])
+            .attr('data-current', 'smaller')
+            .data('current', 'smaller');
     } else {
-        element.attr('data-current', 'larger');
-        element.html(comparison['larger']);
+        element
+            .html(comparison['larger'])
+            .attr('data-current', 'larger')
+            .data('current', 'larger');
     }
 }
 
@@ -690,30 +693,30 @@ function change_affix_state(element) {
     let current_state = element.data('current');
     // one-of -> required
     if (current_state === 'one-of') {
-        element.attr('data-current', 'required');
-        element.html(affix_state['required']);
-        element.attr(
-            'title',
-            "This affix must be present"
-        );
+        element
+            .html(affix_state['required'])
+            .attr('data-current', 'required')
+            .data('current', 'required')
+            .attr('title', "This affix must be present");
     }
     // required -> greater
     else if (current_state === 'required') {
-        element.attr('data-current', 'greater');
-        element.html(affix_state['greater']);
-        element.attr(
-            'title',
-            "This affix must be present and be a greater affix"
-        );
+        element
+            .html(affix_state['greater'])
+            .attr('data-current', 'greater')
+            .data('current', 'greater')
+            .attr('title', "This affix must be present and be a greater affix");
     }
     // greater -> one-of
     else if (current_state === 'greater') {
-        element.attr('data-current', 'one-of');
-        element.html(affix_state['one-of']);
-        element.attr(
-            'title',
-            "Any of these affixes, according to the Minimum count, can be present"
-        );
+        element
+            .html(affix_state['one-of'])
+            .attr('data-current', 'one-of')
+            .data('current', 'one-of')
+            .attr(
+                'title',
+                "Any of these affixes, according to the Minimum count, can be present"
+            );
     }
 
 }
@@ -810,8 +813,10 @@ function add_affix(
     // Set the affix key and value
     let affix_text = new_affix.find('p');
     affix_text.text(affix_value);
-    new_affix.removeAttr('id');
-    new_affix.attr('data-key', affix_key);
+    new_affix
+        .removeAttr('id')
+        .attr('data-key', affix_key)
+        .data('key', affix_key);
 
     // Abbreviate the affix if it's too long, or if it's on the list with shorter names
     let abbr = abbreviate_affix(affix_key);
@@ -827,8 +832,10 @@ function add_affix(
     // Add in the comparison and value, if they were passed
     if (affix_compare !== null) {
         let compare = new_affix.find('.comparison');
-        compare.html(comparison[affix_compare]);
-        compare.attr('data-current', affix_compare);
+        compare
+            .html(comparison[affix_compare])
+            .attr('data-current', affix_compare)
+            .data('current', affix_compare);
     }
     if (affix_compare_value !== null) {
         new_affix.find('input').val(affix_compare_value);
@@ -920,11 +927,10 @@ function add_unique(filter_override = null) {
                     compare = [roll[2], comparison[roll[2]]];
                 }
                 new_unique.find('.unique-roll input').val(value);
-                new_unique.find('.unique-roll .comparison').html(compare[1]);
-                new_unique.find('.unique-roll .comparison').attr(
-                    'data-current',
-                    compare[0]
-                );
+                new_unique.find('.unique-roll .comparison')
+                    .html(compare[1])
+                    .attr('data-current', compare[0])
+                    .data('current', compare[0]);
             }
         }
 
@@ -1477,10 +1483,9 @@ function update_element(element, filter) {
         element.find('.unique-roll .comparison').html(
             comparison[unique_aspect['comparison']]
         );
-        element.find('.unique-roll .comparison').attr(
-            'data-current',
-            unique_aspect['comparison']
-        );
+        element.find('.unique-roll .comparison')
+            .attr('data-current', unique_aspect['comparison'])
+            .data('current', unique_aspect['comparison']);
     }
 
     // Set the minPower
@@ -1512,13 +1517,10 @@ function update_element(element, filter) {
         );
         let affix_element = element.find('.affixes').children().last();
         let state_of_affix = affix['greater_required'] ? 'greater' : 'required';
-        affix_element.find('[data-key="affix-pooling"]').html(
-            affix_state[state_of_affix]
-        );
-        affix_element.find('[data-key="affix-pooling"]').attr(
-            'data-current',
-            state_of_affix
-        );
+        affix_element.find('[data-key="affix-pooling"]')
+            .html(affix_state[state_of_affix])
+            .attr('data-current', state_of_affix)
+            .data('current', state_of_affix);
     }
 
     // Set the implicit affixes
