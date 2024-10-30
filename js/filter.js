@@ -403,6 +403,7 @@ class affix {
      * @private
      */
     #from_yaml(object_from_yaml) {
+        // todo
     }
 
     /**
@@ -572,5 +573,10 @@ class affix {
      * js-yaml-write.
      */
     yaml() {
+        return {
+            name: this.name,
+            value: this.value,
+            comparison: this.comparison,
+        };
     }
 }
