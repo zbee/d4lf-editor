@@ -142,3 +142,46 @@ $.getJSON(URL_UNIQUES, function (data) {
  */
 const UNIQUES_DATA = Object.freeze(_uniques);
 
+//
+// Affix Abbreviations
+//
+
+/**
+ * Direct abbreviations for full affix names.
+ */
+const AFFIX_ABBREVIATIONS = Object.freeze({
+    'evade_grants_movement_speed_for_second': 'evade gives speed',
+    'attacks_reduce_evades_cooldown_by_seconds': 'attacks reduce evade cd',
+    'maximum_evade_charges': 'max evades',
+    'cooldown_reduction': 'cdr',
+    'resistance_to_all_elements': 'resist all',
+    'maximum_life': 'max hp',
+    'critical_strike_chance': 'crit chance',
+    'critical_strike_damage': 'crit damage',
+    'attack_speed': 'atk speed',
+    'movement_speed': 'move speed',
+});
+
+/**
+ * Sections of affix names that can be abbreviated.
+ */
+const AFFIX_DYNAMIC_ABBREVIATIONS = Object.freeze({
+    'lucky_hit_': [
+        ['lucky_hit', 'lucky hit'],
+        ['critical_strikes_have', '(crit)'],
+        ['_up_to_a_chance_to', ':'],
+        ['_for_seconds', ''],
+    ],
+    'chance_for_': [
+        ['chance_for', 'cast:'],
+        ['to_cast_twice', ''], // "x2"?
+        ['a_second', ''], // "x2"?
+        ['when_cast', ''],
+    ],
+    'resource_generation_w': [
+        ['resource_generation', 'extra gen:'],
+    ],
+    'critical_strike_chance_against_': [
+        ['critical_strike_chance_against', 'crit vs:'],
+    ],
+});

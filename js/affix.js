@@ -111,7 +111,7 @@ class affix {
 
     /**
      * Parses the affix from YAML.
-     * @param {Object|Array|String} object_from_yaml - The object from YAML.
+     * @param {Object|Array|string} object_from_yaml - The object from YAML.
      * @throws {ERRORS.AFFIX.BAD_DATA}
      * @remarks Requires {@link affix#requirement} to be set.
      * @private
@@ -310,6 +310,42 @@ class affix {
     }
 
     /**
+     * Abbreviates the {@link name|affix name}.
+     * @returns {string} Abbreviated affix name.
+     * @see AFFIX_ABBREVIATIONS
+     * @see AFFIX_DYNAMIC_ABBREVIATIONS
+     * @private
+     */
+    #abbreviated_affix_name() {
+        let affix_name = this.name;
+
+        // Abbreviate the affix if the key is in the list or if it's too long
+        if (AFFIX_ABBREVIATIONS.hasOwnProperty(affix_name)) {
+            return AFFIX_ABBREVIATIONS[affix_name];
+        }
+
+        // If key starts with a dynamic abbreviation, replace each segment of it
+        for (const [abbreviation, replacements]
+            of Object.entries(AFFIX_DYNAMIC_ABBREVIATIONS)) {
+            if (affix_name.startsWith(abbreviation)) {
+                for (const [segment, replacement] of replacements) {
+                    affix_name = affix_name.replace(segment, replacement);
+                }
+            }
+        }
+
+        // Replace underscores with spaces
+        affix_name = affix_name.replace(/_/g, ' ');
+
+        // Abbreviate the affix if it's too long
+        if (affix_name.length > 35) {
+            affix_name = affix_name.substring(0, 32) + '...';
+        }
+
+        return affix_name;
+    }
+
+    /**
      * Converts the affix to HTML.
      * @returns {JQuery<HTMLElement>} The HTML representation of the affix.
      * @remarks
@@ -329,7 +365,8 @@ class affix {
             .data('key', this.key)
             .attr('data-key', this.key)
             .find('[data-key="affix-key"]');
-        new_affix_element.find('p').text(this.name);
+        new_affix_element.find('p')
+            .text(this.#abbreviated_affix_name());
 
         // Set the comparison if not default
         if (this.comparison !== COMPARISON_TYPES.LARGER) {
