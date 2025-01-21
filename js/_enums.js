@@ -109,6 +109,7 @@ const URL_ITEM_TYPES = 'https://d4lf-editor.zbee.codes/json/item_types.json'
  */
 const URL_UNIQUES = 'https://d4lf-editor.zbee.codes/json/uniques.json';
 
+/** @private */
 let _affixes = {};
 $.getJSON(URL_AFFIXES, function (data) {
     _affixes = data;
@@ -119,6 +120,7 @@ $.getJSON(URL_AFFIXES, function (data) {
  */
 const AFFIXES_DATA = Object.freeze(_affixes);
 
+/** @private */
 let _item_types = {};
 $.getJSON(URL_ITEM_TYPES, function (data) {
     _item_types = data;
@@ -129,6 +131,7 @@ $.getJSON(URL_ITEM_TYPES, function (data) {
  */
 const ITEM_TYPES_DATA = Object.freeze(_item_types);
 
+/** @private */
 let _uniques = {};
 $.getJSON(URL_UNIQUES, function (data) {
     _uniques = data;
