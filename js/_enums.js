@@ -109,7 +109,6 @@ const URL_ITEM_TYPES = 'https://d4lf-editor.zbee.codes/json/item_types.json'
  */
 const URL_UNIQUES = 'https://d4lf-editor.zbee.codes/json/uniques.json';
 
-/** @private */
 let _affixes = {};
 $.getJSON(URL_AFFIXES, function (data) {
     _affixes = data;
