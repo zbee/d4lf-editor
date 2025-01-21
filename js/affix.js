@@ -340,7 +340,7 @@ class affix {
         }
 
         // Set the requirement if not default
-        if (this.requirement === REQUIREMENT_TYPES.ONE_OF) {
+        if (this.requirement !== REQUIREMENT_TYPES.ONE_OF) {
             // noinspection JSCheckFunctionSignatures
             affix.toggle_requirement(
                 new_affix_element.find('[data-key="affix-pooling"]'),
