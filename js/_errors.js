@@ -19,7 +19,12 @@ const ERRORS = {
         BAD_KEYS: new Error('#01104 Affix had a corrupted data key'),
     },
     /** @see affixes */
-    AFFIXES: {},
+    AFFIXES: {
+        /** Constructor received null for all parameters */
+        NO_CONTEXT: new Error('#02001 No affix data provided to ctor.'),
+        /** parsing resulted in a null value for a required field */
+        BAD_DATA: new Error('#02002 Affix data is invalid.'),
+    },
     /** @see filter_part */
     FILTER_PART: {},
     /** @see filter */

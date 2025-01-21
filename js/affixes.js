@@ -44,25 +44,36 @@ class affixes {
     greaters_required = null;
 
     /**
-     * The affixes object.
-     * @type {Object|null}
-     */
-    affixes = null;
-
-    /**
      * Creates affixes.
-     * @param {Object|null} [object_from_yaml=null] - The object from YAML.
+     * @param {Object|null} [yaml=null] - The object from YAML.
      * @param {JQuery<HTMLElement>|null} [$html=null] - The HTML element.
      */
-    constructor(object_from_yaml = null, $html = null) {
+    constructor(yaml = null, $html = null) {
+        // Parse the affix from User Input, YAML, or HTML.
+        if (yaml !== null) {
+            this.#from_yaml(yaml);
+        }
+        else if ($html !== null) {
+            this.#from_html($html);
+        }
+        // Error if no context is provided.
+        else {
+            throw ERRORS.AFFIXES.NO_CONTEXT;
+        }
+
+        // Make sure required data is present.
+        if (this.total_required == null
+            || this.greaters_required == null) {
+            throw ERRORS.AFFIXES.BAD_DATA;
+        }
     }
 
     /**
      * Parses the affixes from YAML.
-     * @param {Object} object_from_yaml - The object from YAML.
+     * @param {Object} yaml - The object from YAML.
      * @private
      */
-    #from_yaml(object_from_yaml) {
+    #from_yaml(yaml) {
     }
 
     /**
