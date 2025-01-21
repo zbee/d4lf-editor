@@ -1,11 +1,7 @@
 # Based off of the now-deleted Maxroll Sigil tier lists for Glyph and XP
-# It is only S and A tier areas excluded from the filter
+# It is only S and A tier areas included in the filter
 
 Sigils:
-  # None of this is very applicable anymore (probably), but these 2 definitely aren't:
-  #minTier: 70
-  #maxTier: 100
-
   blacklist:
     # Affixes
     # Worst of the worst
