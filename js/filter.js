@@ -250,9 +250,9 @@ class affixes {
     /**
      * Creates affixes.
      * @param {Object|null} [object_from_yaml=null] - The object from YAML.
-     * @param {HTMLElement|null} [html_element=null] - The HTML element.
+     * @param {JQuery<HTMLElement>|null} [$html=null] - The HTML element.
      */
-    constructor(object_from_yaml = null, html_element = null) {
+    constructor(object_from_yaml = null, $html = null) {
     }
 
     /**
@@ -265,10 +265,10 @@ class affixes {
 
     /**
      * Parses the affixes from HTML.
-     * @param {HTMLElement} html_element - The HTML element.
+     * @param {JQuery<HTMLElement>} $html - The HTML element.
      * @private
      */
-    #from_html(html_element) {
+    #from_html($html) {
     }
 
     /**
@@ -332,8 +332,10 @@ class affix {
      * @throws {ERRORS.AFFIX.NO_CONTEXT}
      * @throws {ERRORS.AFFIX.BAD_DATA}
      * @remarks
+     * If created from {@link yaml}, {@link affix#requirement} must be set.<br/>
      * If created from {@link $input}, the affix's {@link affix#html|element} will also be
      * added to the HTML.
+     * @constructor
      */
     constructor(
         $input = null,
@@ -366,8 +368,7 @@ class affix {
         }
 
         // Add the affix to the HTML if made from user input.
-        // todo: check !affixes($input).has_affix(this.key) before adding
-        if ($input !== null) {
+        if ($input !== null && !affix.already_exists($input, this.key)) {
             let new_element = this.html();
             // noinspection JSCheckFunctionSignatures
             $input.parent().find('.affixes').append(new_element);
@@ -380,6 +381,7 @@ class affix {
      * @param {JQuery<HTMLElement>} $new_selection_element
      * The HTML element the user input from.
      * @throws {ERRORS.AFFIX.NO_JQUERY}
+     * @private
      */
     #from_user_addition($new_selection_element) {
         if ($new_selection_element.length === 0) {
@@ -392,18 +394,59 @@ class affix {
 
         this.key = selected_affix.data('key');
         this.name = selected_affix.data('value');
-        this.value = 0; // default
-        this.comparison = COMPARISON_TYPES.LARGER; // default
-        this.requirement = REQUIREMENT_TYPES.ONE_OF; // default
+
+        this.#fill_defaults()
     }
 
     /**
      * Parses the affix from YAML.
-     * @param {Object} object_from_yaml - The object from YAML.
+     * @param {Object|Array|String} object_from_yaml - The object from YAML.
+     * @throws {ERRORS.AFFIX.BAD_DATA}
+     * @remarks Requires {@link affix#requirement} to be set.
      * @private
      */
     #from_yaml(object_from_yaml) {
-        // todo
+        if (typeof affix === 'object') {
+            if (!object_from_yaml.hasOwnProperty('name')) {
+                throw ERRORS.AFFIX.BAD_DATA;
+            }
+
+            this.key = object_from_yaml['name'];
+            if (object_from_yaml.hasOwnProperty('value')) {
+                this.value = object_from_yaml['value'];
+            }
+            if (object_from_yaml.hasOwnProperty('comparison')) {
+                this.comparison = object_from_yaml['comparison'];
+            }
+        }
+        if (Array.isArray(affix)) {
+            if (object_from_yaml.length === 0) {
+                throw ERRORS.AFFIX.BAD_DATA;
+            }
+
+            this.key = object_from_yaml[0];
+            if (object_from_yaml.length > 1) {
+                this.value = object_from_yaml[1];
+            }
+            if (object_from_yaml.length > 2) {
+                this.comparison = object_from_yaml[2];
+            }
+        }
+        if (typeof affix === 'string') {
+            if (object_from_yaml === '') {
+                throw ERRORS.AFFIX.BAD_DATA;
+            }
+
+            this.key = object_from_yaml;
+        }
+
+        // Check that the key is valid
+        if (!AFFIXES_DATA.hasOwnProperty(this.key)) {
+            this.key = null;
+            throw ERRORS.AFFIX.BAD_DATA;
+        }
+
+        this.#fill_defaults()
     }
 
     /**
@@ -431,6 +474,36 @@ class affix {
         this.requirement = $html
             .find('[data-key="affix-pooling"]')
             .data('current');
+    }
+
+    /**
+     * Fills in default values for affix attributes.
+     * @private
+     */
+    #fill_defaults() {
+        if (this.name === null) {
+            this.name = AFFIXES_DATA[this.key];
+        }
+        if (this.value === null) {
+            this.value = 0;
+        }
+        if (this.comparison === null) {
+            this.comparison = COMPARISON_TYPES.LARGER;
+        }
+        if (this.requirement === null) {
+            this.requirement = REQUIREMENT_TYPES.ONE_OF;
+        }
+    }
+
+    /**
+     * Checks if the affix the user is trying to add already exists.
+     * @param {JQuery<HTMLElement>} $html
+     * The jQuery HTML addition element the user input from.
+     * @param {string} key The real name of the affix to check for.
+     * @returns {boolean} If the affix already exists.
+     */
+    static already_exists($html, key) {
+        return (new affixes(null, $html)).has_affix(key);
     }
 
     /**
