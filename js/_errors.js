@@ -20,7 +20,7 @@ const ERRORS = {
     },
     /** @see affixes */
     AFFIXES: {},
-    /** @see individual_filter_part */
+    /** @see filter_part */
     FILTER_PART: {},
     /** @see filter */
     FILTER: {},

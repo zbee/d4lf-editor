@@ -47,7 +47,7 @@ class filter {
 
     /**
      * List of filter objects.
-     * @type {individual_filter_part[]}
+     * @type {filter_part[]}
      */
     parts = [];
 

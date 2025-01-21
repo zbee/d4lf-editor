@@ -3,7 +3,7 @@
  * with {@link affixes}, item data (item type, power, etc.), and any unique aspect.
  * @class
  */
-class individual_filter_part {
+class filter_part {
     /**
      * The slot of the filter part.
      * @type {string|null}

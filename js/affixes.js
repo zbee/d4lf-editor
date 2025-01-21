@@ -1,5 +1,5 @@
 /**
- * Represents all the {@link affix|affixes} for an {@link individual_filter_part}.
+ * Represents all the {@link affix|affixes} for an {@link filter_part}.
  * @class
  */
 class affixes {
