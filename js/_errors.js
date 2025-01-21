@@ -22,8 +22,10 @@ const ERRORS = {
     AFFIXES: {
         /** Constructor received null for all parameters */
         NO_CONTEXT: new Error('#02001 No affix data provided to ctor.'),
+        /** HTML parsing received a jQuery selector with no matching element */
+        NO_JQUERY: new Error('#02002 No affixes element found for selector.'),
         /** parsing resulted in a null value for a required field */
-        BAD_DATA: new Error('#02002 Affix data is invalid.'),
+        BAD_DATA: new Error('#02003 Affix data is invalid.'),
     },
     /** @see filter_part */
     FILTER_PART: {},

@@ -5,28 +5,28 @@
 class affixes {
     /**
      * List of required greater affixes.
-     * @type {Array}
+     * @type {Array<affix>}
      * @private
      */
     #required_greater_affixes = [];
 
     /**
      * List of required affixes.
-     * @type {Array}
+     * @type {Array<affix>}
      * @private
      */
     #required_affixes = [];
 
     /**
      * List of optional affixes.
-     * @type {Array}
+     * @type {Array<affix>}
      * @private
      */
     #optional_affixes = [];
 
     /**
      * List of implicit affixes.
-     * @type {Array}
+     * @type {Array<affix>}
      * @private
      */
     #implicit_affixes = [];
@@ -82,6 +82,53 @@ class affixes {
      * @private
      */
     #from_html($html) {
+        if ($html.length === 0) {
+            throw ERRORS.AFFIXES.NO_JQUERY;
+        }
+
+        // noinspection JSCheckFunctionSignatures
+        this.greaters_required = parseInt($html
+            .find('[data-key="minGreaterAffixCount"]')
+            .find('input')
+            .val(), 10);
+        // noinspection JSCheckFunctionSignatures
+        this.total_required = parseInt($html
+            .find('[data-key="minCount"]')
+            .find('input')
+            .val(), 10);
+
+        // noinspection JSCheckFunctionSignatures
+        $html = $html.find('.affixes');
+
+        // Build and place all affixes.
+        $html.find('code').each((index, element) => {
+            let this_affix = new affix(null, element);
+            if (this_affix.is_implicit) {
+                this.#implicit_affixes.push(this_affix);
+                return;
+            }
+            switch (this_affix.requirement) {
+                case REQUIREMENT_TYPES.REQUIRED:
+                    this.#required_affixes.push(this_affix);
+                    break;
+                case REQUIREMENT_TYPES.GREATER:
+                    this.#required_greater_affixes.push(this_affix);
+                    break;
+                case REQUIREMENT_TYPES.ONE_OF:
+                default:
+                    this.#optional_affixes.push(this_affix);
+                    break;
+            }
+        });
+
+        // Sanity-check total_required
+        if (this.total_required > this.#optional_affixes.length) {
+            this.total_required = this.#optional_affixes.length;
+        }
+        // Sanity-check greaters_required
+        if (this.greaters_required > this.#required_greater_affixes.length) {
+            this.greaters_required = this.#required_greater_affixes.length;
+        }
     }
 
     /**
