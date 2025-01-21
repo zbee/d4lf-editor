@@ -89,6 +89,17 @@ const SYMBOLS = Object.freeze({
     },
 });
 
+/**
+ * Affixes that are only Implicit.
+ * @type {Readonly<string[]>}
+ * @see {@link https://d4builds.gg/database/gear-affixes/|D4Builds.gg Affix List}
+ */
+const IMPLICIT_AFFIXES = Object.freeze([
+    'attacks_reduce_evades_cooldown_by_seconds',
+    'maximum_evade_charges',
+    'evade_grants_attack_speed_for_seconds',
+]);
+
 //
 // D4LF Imported JSON Enums
 //

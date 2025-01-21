@@ -35,6 +35,13 @@ class affix {
     requirement = null;
 
     /**
+     * Whether the affix is implicit.
+     * @type {null}
+     * @see IMPLICIT_AFFIXES
+     */
+    is_implicit = null;
+
+    /**
      * Creates an affix.
      * @param {JQuery<HTMLElement>|null} [$input=null]
      * The jQuery HTML addition element the user input from.
@@ -76,6 +83,12 @@ class affix {
             || this.value === null
             || this.requirement === null) {
             throw ERRORS.AFFIX.BAD_DATA;
+        }
+
+        // Check if the affix is implicit
+        if (IMPLICIT_AFFIXES.includes(this.key)) {
+            this.is_implicit = true;
+            this.requirement = REQUIREMENT_TYPES.REQUIRED;
         }
 
         // Add the affix to the HTML if made from user input.
