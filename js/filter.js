@@ -647,7 +647,7 @@ class affix {
      */
     yaml() {
         return {
-            name: this.name,
+            name: this.key,
             value: this.value,
             comparison: this.comparison,
         };
