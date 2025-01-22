@@ -48,7 +48,7 @@ const off_hand_weapons = [
 const two_handed_weapons = [
     'axe2H',
     'bow',
-    'crossbow2H',
+    'crossbow',
     'mace2H',
     'polearm',
     'scythe2H',
