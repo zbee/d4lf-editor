@@ -105,17 +105,17 @@ const IMPLICIT_AFFIXES = Object.freeze([
 //
 
 /**
- * @see https://github.com/aeon0/d4lf/blob/main/assets/lang/enUS/affixes.json
+ * @see https://github.com/d4lfteam/d4lf/blob/main/assets/lang/enUS/affixes.json
  * @private
  */
 const URL_AFFIXES = 'https://d4lf-editor.zbee.codes/json/affixes.json';
 /**
- * @see https://github.com/aeon0/d4lf/blob/main/assets/lang/enUS/item_types.json
+ * @see https://github.com/d4lfteam/d4lf/blob/main/assets/lang/enUS/item_types.json
  * @private
  */
 const URL_ITEM_TYPES = 'https://d4lf-editor.zbee.codes/json/item_types.json'
 /**
- * @see https://github.com/aeon0/d4lf/blob/main/assets/lang/enUS/uniques.json
+ * @see https://github.com/d4lfteam/d4lf/blob/main/assets/lang/enUS/uniques.json
  * @private
  */
 const URL_UNIQUES = 'https://d4lf-editor.zbee.codes/json/uniques.json';
