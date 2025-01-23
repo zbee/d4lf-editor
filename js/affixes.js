@@ -79,6 +79,8 @@ class affixes {
     /**
      * Parses the affixes from HTML.
      * @param {JQuery<HTMLElement>} $html - The HTML element.
+     * @throws ERRORS.AFFIXES.NO_JQUERY If the jQuery selector has no matching element.
+     * @throws ERRORS.AFFIXES.DUPLICATE_KEYS If duplicate affix keys are found.
      * @private
      */
     #from_html($html) {
@@ -121,6 +123,9 @@ class affixes {
             }
         });
 
+        // Check for duplicates
+        this.#check_for_duplicates();
+
         // Sanity-check total_required
         if (this.total_required > this.#optional_affixes.length) {
             this.total_required = this.#optional_affixes.length;
@@ -130,6 +135,28 @@ class affixes {
             this.greaters_required = this.#required_greater_affixes.length;
         }
     }
+
+    /**
+     * Checks for duplicate affix keys.
+     * @throws ERRORS.AFFIXES.DUPLICATE_KEYS If duplicate affix keys are found.
+     * @private
+     */
+    #check_for_duplicates() {
+        const all_affixes = [
+            ...this.#required_affixes,
+            ...this.#required_greater_affixes,
+            ...this.#optional_affixes,
+            ...this.#implicit_affixes
+        ];
+        const seen_keys = new Set();
+        for (const affix of all_affixes) {
+            if (seen_keys.has(affix.key)) {
+                throw ERRORS.AFFIXES.DUPLICATE_KEYS;
+            }
+            seen_keys.add(affix.key);
+        }
+    }
+
     /**
      * Checks if an affix is present in the list of affixes.
      * @param affix the affix.key to check for.
@@ -137,6 +164,9 @@ class affixes {
      * @throws ERRORS.AFFIXES.DUPLICATE_KEYS If duplicate affix keys are found.
      */
     has_affix(affix) {
+        // Check for duplicates
+        this.#check_for_duplicates();
+
         return this.#required_affixes.some(a => a.key === affix)
             || this.#required_greater_affixes.some(a => a.key === affix)
             || this.#optional_affixes.some(a => a.key === affix)

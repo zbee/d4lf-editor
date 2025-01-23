@@ -26,6 +26,8 @@ const ERRORS = {
         NO_JQUERY: new Error('#02002 No affixes element found for selector.'),
         /** parsing resulted in a null value for a required field */
         BAD_DATA: new Error('#02003 Affix data is invalid.'),
+        /** duplicate keys were found in the affixes */
+        DUPLICATE_KEYS: new Error('#02004 Duplicate affix keys found'),
     },
     /** @see filter_part */
     FILTER_PART: {},
