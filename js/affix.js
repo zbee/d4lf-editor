@@ -227,7 +227,7 @@ class affix {
      * @returns {boolean} If the affix already exists.
      */
     static already_exists($html, key) {
-        return (new affixes(null, $html)).has_affix(key);
+        return (new affixes(null, $html.parent())).has_affix(key);
     }
 
     /**

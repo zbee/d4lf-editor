@@ -130,6 +130,18 @@ class affixes {
             this.greaters_required = this.#required_greater_affixes.length;
         }
     }
+    /**
+     * Checks if an affix is present in the list of affixes.
+     * @param affix the affix.key to check for.
+     * @returns {boolean} True if the affix is present.
+     * @throws ERRORS.AFFIXES.DUPLICATE_KEYS If duplicate affix keys are found.
+     */
+    has_affix(affix) {
+        return this.#required_affixes.some(a => a.key === affix)
+            || this.#required_greater_affixes.some(a => a.key === affix)
+            || this.#optional_affixes.some(a => a.key === affix)
+            || this.#implicit_affixes.some(a => a.key === affix);
+    }
 
     /**
      * Converts the affixes to HTML.
