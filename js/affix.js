@@ -72,7 +72,7 @@ class affix {
         }
         // Error if no context is provided.
         else {
-            throw ERRORS.AFFIX.NO_CONTEXT;
+            error.throw(ERRORS.AFFIX.NO_CONTEXT);
         }
 
         // Error if any values are still null.
@@ -82,7 +82,7 @@ class affix {
             || this.comparison === null
             || this.value === null
             || this.requirement === null) {
-            throw ERRORS.AFFIX.BAD_DATA;
+            error.throw(ERRORS.AFFIX.BAD_DATA);
         }
 
         // Check if the affix is implicit
@@ -109,7 +109,7 @@ class affix {
      */
     #from_user_addition($new_selection_element) {
         if ($new_selection_element.length === 0) {
-            throw ERRORS.AFFIX.NO_JQUERY;
+            error.throw(ERRORS.AFFIX.NO_JQUERY);
         }
 
         let selected_affix = $new_selection_element
@@ -132,7 +132,7 @@ class affix {
     #from_yaml(object_from_yaml) {
         if (typeof affix === 'object') {
             if (!object_from_yaml.hasOwnProperty('name')) {
-                throw ERRORS.AFFIX.BAD_DATA;
+                error.throw(ERRORS.AFFIX.BAD_DATA);
             }
 
             this.key = object_from_yaml['name'];
@@ -145,7 +145,7 @@ class affix {
         }
         if (Array.isArray(affix)) {
             if (object_from_yaml.length === 0) {
-                throw ERRORS.AFFIX.BAD_DATA;
+                error.throw(ERRORS.AFFIX.BAD_DATA);
             }
 
             this.key = object_from_yaml[0];
@@ -158,7 +158,7 @@ class affix {
         }
         if (typeof affix === 'string') {
             if (object_from_yaml === '') {
-                throw ERRORS.AFFIX.BAD_DATA;
+                error.throw(ERRORS.AFFIX.BAD_DATA);
             }
 
             this.key = object_from_yaml;
@@ -167,7 +167,7 @@ class affix {
         // Check that the key is valid
         if (!AFFIXES_DATA.hasOwnProperty(this.key)) {
             this.key = null;
-            throw ERRORS.AFFIX.BAD_DATA;
+            error.throw(ERRORS.AFFIX.BAD_DATA);
         }
 
         this.#fill_defaults()
@@ -181,7 +181,7 @@ class affix {
      */
     #from_html($html) {
         if ($html.length === 0) {
-            throw ERRORS.AFFIX.NO_JQUERY;
+            error.throw(ERRORS.AFFIX.NO_JQUERY);
         }
 
         this.key = $html.data('key');
@@ -245,6 +245,7 @@ class affix {
                 .html(SYMBOLS.COMPARISON.SMALLER)
                 .attr('data-current', COMPARISON_TYPES.SMALLER)
                 .data('current', COMPARISON_TYPES.SMALLER);
+            error.throw(ERRORS.AFFIX.BAD_KEYS);
         }
         else {
             $html
@@ -255,7 +256,7 @@ class affix {
             // We use else to catch any other options than what are expected, but
             // still want to report when it is an unexpected value
             if (current_comparison !== COMPARISON_TYPES.SMALLER) {
-                throw ERRORS.AFFIX.BAD_KEYS;
+                error.throw(ERRORS.AFFIX.BAD_KEYS);
             }
         }
     }
@@ -310,7 +311,7 @@ class affix {
         }
 
         if (bad_keys) {
-            throw ERRORS.AFFIX.BAD_KEYS;
+            error.throw(ERRORS.AFFIX.BAD_KEYS);
         }
     }
 

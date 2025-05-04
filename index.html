@@ -7,14 +7,7 @@
   <link rel="stylesheet" href="./css/sakura.css" media="screen"/>
   <link rel="stylesheet" href="./css/main.css" media="screen"/>
   <script src="./js/_errors.js"></script>
-  <script src="./js/_enums.js"></script>
   <script src="./js/_versions.js"></script>
-  <!--
-  <script src="./js/affix.js"></script>
-  <script src="./js/affixes.js"></script>
-  <script src="./js/filter_part.js"></script>
-  <script src="./js/filter.js"></script>
-  -->
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"
       integrity="sha512-CSBhVREyzHAjAFfBlIBakjoRUKp5h7VSweP0InR/pAJyptH7peuhCsqAI/snV+TwZmXZqoUklpXp6R6wMnYf5Q=="
@@ -190,7 +183,7 @@
     </p>
     <span class="comparison button" data-current="larger"
           data-key="affix-comparison"
-          onclick="change_comparison($(this))">
+          onclick="affix.toggle_comparison($(this))">
               &#10095;
             </span>
     <input type="number" min="0" max="3000" value="0"
@@ -299,5 +292,12 @@
 </div>
 </body>
 <script src="./js/_selectors.js"></script>
+<script src="./js/_enums.js"></script>
+<script src="./js/affix.js"></script>
+<script src="./js/affixes.js"></script>
+<!--
+<script src="./js/filter_part.js"></script>
+<script src="./js/filter.js"></script>
+-->
 <script src="./js/editor.js"></script>
 </html>

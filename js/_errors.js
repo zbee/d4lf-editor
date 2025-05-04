@@ -34,3 +34,16 @@ const ERRORS = {
     /** @see filter */
     FILTER: {},
 };
+
+class error {
+    /**
+     * Throws an error.
+     *
+     * @param {Error} error - The {@link ERRORS|error} to throw.
+     */
+    static throw(error) {
+        console.debug('Error thrown from:', new Error().stack.split('\n')[2].trim());
+        console.log('Error thrown from:', new Error().stack.split('\n')[1].trim());
+        throw error;
+    }
+}
